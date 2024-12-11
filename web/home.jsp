@@ -87,8 +87,8 @@
         </div>
 
 
-        <footer class="bg-white pt-1 pb-4">
-            <div class="container-fluid  text-md-left">
+        <footer class="bg-white pt-1 overflow-hidden">
+            <div class=" bg-white  text-md-left">
                 <div class="row">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3777452.5461484166!2d68.68616997764056!3d22.394429584322157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3959051f5f0ef795%3A0x861bd887ed54522e!2sGujarat!5e0!3m2!1sen!2sin!4v1733812745252!5m2!1sen!2sin" 
                             width="600" height="450" style="border:0;" allowfullscreen="" 
@@ -96,79 +96,62 @@
                     </iframe>
                 </div>
 
-                <div class="row  text-md-left ">
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3 d-flex gap-2">
+                <div class=" container  justify-content-around border shadow mt-2 mx-auto row text-md-left">
+                    <div class="col-md-3   mx-auto mt-3 d-flex gap-2">
                         <div>
                             <p>
-                                <i class="fas fa-location mr-3" style="font-size: 23px;"></i>
+                                <i class="fas fa-location mr-3 text-primary" style="font-size: 23px;"></i>
                             </p>
                         </div>
                         <div>
-                            <h5 class="text-uppercase mb-2 font-weight-bold">Porbandar</h5>
+                            <h5 class="text-uppercase mb-2 font-weight-bold text-primary">Porbandar</h5>
                             <p>Fish Market , Kharvavad <br> Porbandar-360575</p>
                         </div>
                     </div>
 
-                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3 d-flex gap-2">
+                    <div class="col-md-3  mx-auto mt-3 d-flex gap-2">
                         <div>
                             <p>
-                                <i class="fas fa-envelope mr-3" style="font-size: 23px;"></i>
+                                <i class="fas fa-envelope mr-3 text-primary" style="font-size: 23px;"></i>
                             </p>
                         </div>
                         <div>
-                            <h5 class="text-uppercase mb-2 font-weight-bold">Email</h5>
+                            <h5 class="text-uppercase mb-2 font-weight-bold text-primary">Email</h5>
                             <p>FishTransportation@gmail.com</p>
                         </div>
                     </div>
-                    
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3 d-flex gap-2">
+
+                    <div class="col-md-3  mx-auto mt-3 d-flex gap-2">
                         <div>
                             <p>
-                                <i class="fas fa-phone mr-3" style="font-size: 23px;"></i>
+                                <i class="fas fa-phone mr-3 text-primary" style="font-size: 23px;"></i>
                             </p>
                         </div>
                         <div>
-                            <h5 class="text-uppercase mb-2 font-weight-bold">Call</h5>
+                            <h5 class="text-uppercase text-primary mb-2 font-weight-bold">Call</h5>
                             <p>+91 1234567891</p>
                         </div>
                     </div>
-                    
-                    <hr class="mb-4">
-                    <div class="row align-items-center">
-                        <div class="col-md-7 col-lg-8">
-                            <p>CopyRight @2024 All rights reserved by:
-                                <a href="#" style="text-decoration: none;">
-                                    <strong class="text-warning">Fish Transportation</strong>
-                                </a>
-                            </p>
-                        </div>
+                </div>
+                <div class="bg-secondary pb-2">
+                    <hr class="">
 
-                        <div class="col-md-5 col-lg-4">
-                            <div class="text-center text-md-right">
-                                <ul class="list-unstyled list-inline">
-                                    <li class="list-inline-item">
-                                        <a href="#" class="btn-floating btn-sm text-white" style="font-size: 23px;"><i class="fab fa-facebook"></i></a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#" class="btn-floating btn-sm text-white" style="font-size: 23px;"><i class="fab fa-whatsapp"></i></a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#" class="btn-floating btn-sm text-white" style="font-size: 23px;"><i class="fab fa-instagram"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
+                    <div class=" container mx-auto row bg-white align-items-center ">
+                        <p class=" fw-bold fs-5 text-center" style="color: grey;">Important Links</p>
+                        <div class="fs-5 text-primary">
+                            <marquee>
+                                <a href="#" style=" text-decoration:none;margin-right: 30px;">Boat/Owner</a>
+                                <a href="#" style=" text-decoration:none;margin-right: 30px;">Drawings Management</a>
+                                <a href="#" style=" text-decoration:none;margin-right: 30px;">Stock Management</a>
+                                <a href="#" style=" text-decoration:none;margin-right: 30px;">Company Management</a>
+                            </marquee>
+
                         </div>
                     </div>
                 </div>
-
-                <!--<hr class="mb-4">-->
-                <!--                 <div class="row">
-                                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3777452.5461484166!2d68.68616997764056!3d22.394429584322157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3959051f5f0ef795%3A0x861bd887ed54522e!2sGujarat!5e0!3m2!1sen!2sin!4v1733812745252!5m2!1sen!2sin" 
-                                             width="600" height="450" style="border:0;" allowfullscreen="" 
-                                             loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                                     </iframe>
-                                 </div>-->
-            </div>
+                        <div class="row bg-dark ">
+                            <p class="text-white text-center mt-1 mb-1" style="font-size: 15px;">Developed by <font class="text-warning">PMD</font></p>
+                        </div>
         </footer>
 
     </body>
