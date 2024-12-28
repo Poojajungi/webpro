@@ -39,3 +39,17 @@
         width:100%;
     }
 }
+.slide-up {
+  animation: slideUp 5s ease-out;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translatX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}

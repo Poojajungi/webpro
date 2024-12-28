@@ -9,106 +9,142 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+        <style>
+    /* Ensure the nested dropdowns align correctly */
+    .dropdown-menu .dropdown-menu {
+      /* margin-left: 100%; */
+      top: 0;
+      left: 100%;
+      margin-top: -5px;
+    }
+
+    /* Hide submenu by default */
+    .submenu .dropdown-menu {
+      display: none;
+    }
+
+    /* Optional: Add transition for smooth effect */
+    .submenu .dropdown-menu {
+      transition: opacity 0.2s;
+    }
+  </style>
         <script>
 
             function loadGoogleTranslate()
 
             {
 
-                new google.translate.TranslateElement("myid")
+            new google.translate.TranslateElement("myid")
 
             }
-
         </script>
 
         <title>Home Page</title>
     </head>
     <body class="vh-100">
-        <!--        <div id="myid">Choose Language</div>-->
+                <!--<div id="myid">Choose Language</div>-->
         <div class="mainImg">
+        <nav class="navbar navbar-expand-lg bg-transparent fs-5">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-semibold" href="#">Fish Transportation</a>
+        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Boat/Owner
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Register</a></li>
+                        <li><a class="dropdown-item" href="#">View</a></li>
+                    </ul>
+                </li>
 
-            <!--NavBar-->
-            <nav class="navbar  navbar-expand-lg bg-transparent fs-5 ">
-                <div class="container-fluid">
-                    <!--Logo-->
-                    <a class="navbar-brand fw-semibold" href="#">Fish Transportation</a>
-                    <!--Toggle Button-->
-                    <button class="navbar-toggler shadow-none boder-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!--SideBar-->
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Boat/Owner
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Register</a></li>
-                                    <li><a class="dropdown-item" href="#">View</a></li>
-                                </ul>
-                            </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Withdrawal Management
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Add Withdrawal</a></li>
+                        <li><a class="dropdown-item" href="#">View Withdrawal</a></li>
+                    </ul>
+                </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Withdrawal Management
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Add Withdrawal</a></li>
-                                    <li><a class="dropdown-item" href="#">View Withdrawal</a></li>
-                                </ul>
-                            </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Stock Management
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Import Stock</a></li>
+                        <!-- Submenu opens on hover with JavaScript -->
+                        <li class="nav-item ms-2 dropend submenu" id="submenu"> 
+                            <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
+                                Export Stock 
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Export to Company</a></li>
+                                <li><a class="dropdown-item" href="#">Export to Agency/Person</a></li>
+                            </ul>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Monthly Stock Report</a></li>
+                    </ul>
+                </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Stock Management
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Import Stock</a></li>
-                                    <li><a class="dropdown-item" href="#">Export Stock</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Monthly Stock Report</a></li>
-                                </ul>
-                            </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Company
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Add New Company</a></li>
+                        <li><a class="dropdown-item" href="#">View Company</a></li>
+                    </ul>
+                </li>
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><div id="myid"></div></li>
+                    </ul>
+                </li>
+            </ul>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Company
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Add New Company</a></li>
-                                    <li><a class="dropdown-item" href="#">View Company</a></li>
-                                </ul>
-                            </li>
+            <div class="d-flex align-items-center gap-3">
+                <a href="#login" class="text-black">Login</a>
+                <a href="#signUp" class="text-white text-decoration-none px-3 py-1 rounded-4" style="background-color: #f94ca4">Register</a>
+            </div>
+        </div>
+    </div>
+  </nav>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Language
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><div id="myid"></div></li>
-                                </ul>
-                            </li>
+  <script>
+    // JavaScript to show and hide the submenu on hover
+    const submenu = document.getElementById('submenu');
+    const submenuDropdown = submenu.querySelector('.dropdown-menu');
+    
+    // Show submenu on mouse enter
+    submenu.addEventListener('mouseenter', () => {
+      submenuDropdown.style.display = 'block';
+    });
+    
+    // Hide submenu on mouse leave
+    submenu.addEventListener('mouseleave', () => {
+      submenuDropdown.style.display = 'none';
+    });
+  </script>
 
-                        </ul>
-                        <!--Login / Register-->
-                        <div class="d-flex  align-items-center gap-3">
-                            <a href="#login" class="text-black">Login</a>
-                            <a href="#signUp" class="text-white text-decoration-none px-3 py-1 rounded-4" style="background-color: #f94ca4">Register</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
 
             <div class="vh-100">
                 <section class=" d-flex flex-column align-items-center">
-                    <h1 class="textdesign" data-text="Fish Transportation...">Fish Transportation...</h1>
+                    <h1 class="textdesign slide-up" data-text="Fish Transportation...">Fish Transportation...</h1>
                 </section>
             </div>
+    </div>
 
-        </div>
-        
         <div class="container">
             <div class="text-center justify-content-center">
                 <h5 class="text-uppercase mt-3 fw-bold fs-xxl" style="font-family: serif;">A Wave of Relief: Stress-Free Fish Transport</h5>
@@ -121,11 +157,11 @@
                 <p class="mb-5 mt-3" style="font-family: serif;">
                     There are two basic transport systems for live fish - the closed system and the open system. The closed system is a sealed container in which all the requirements for survival are self-contained. The simplest of these is a sealed plastic bag partly filled with water and oxygen. The open system consists of water-filled containers in which the requirements for survival are supplied continuously from outside sources. The simplest of these is a small tank with an aerator stone.
 
-These systems will be reviewed with respect to the problems of fish preparation for transport, types of vehicles and equipments, problems of water quality and its changes during transport, and chemical aids used during fish transport.
+                    These systems will be reviewed with respect to the problems of fish preparation for transport, types of vehicles and equipments, problems of water quality and its changes during transport, and chemical aids used during fish transport.
 
-There is ample literature on fish transport and associated problems; however, the literary sources overlap and give partly differing interpretations of the recommended ways of transport. These are the reasons why this survey aims at comprising mainly those published results which have been fully verified in practice and which are, therefore, reliably instructive.
+                    There is ample literature on fish transport and associated problems; however, the literary sources overlap and give partly differing interpretations of the recommended ways of transport. These are the reasons why this survey aims at comprising mainly those published results which have been fully verified in practice and which are, therefore, reliably instructive.
 
-The basic factors and principles associated with any live fish transport systems, or influencing them, are evaluated before the actual ways of fish transport are commented on.
+                    The basic factors and principles associated with any live fish transport systems, or influencing them, are evaluated before the actual ways of fish transport are commented on.
                 </p>
             </div>
         </div>
@@ -198,6 +234,18 @@ The basic factors and principles associated with any live fish transport systems
                     <p class="text-white text-center mt-1 mb-1" style="font-size: 15px;">Developed by <font class="text-warning">PMD</font></p>
                 </div>
         </footer>
-
+        <!--        <script>
+                    // JavaScript to show and hide the submenu on hover
+                    const submenu = document.getElementById('submenu');
+                    const submenuDropdown = submenu.querySelector('.dropdown-menu');
+                    // Show submenu on mouse enter
+                    submenu.addEventListener('mouseenter', () = > {
+                    submenuDropdown.style.display = 'block';
+                    });
+                    // Hide submenu on mouse leave
+                    submenu.addEventListener('mouseleave', () = > {
+                    submenuDropdown.style.display = 'none';
+                    });
+                </script>-->
     </body>
 </html>
