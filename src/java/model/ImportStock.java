@@ -1,11 +1,14 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class ImportStock {
@@ -15,10 +18,8 @@ public class ImportStock {
         private int Im_ID;
         private String Im_name;
         private String Im_date;
-        private String Im_fishname;
-        private float Im_qty;
-        private float Im_amt;
-        private float Im_totamt;
+        @OneToMany(mappedBy = "importstock")
+        private List<FishImport> fishimport = new ArrayList<FishImport>();
 
     public int getIm_ID() {
         return Im_ID;
@@ -44,43 +45,22 @@ public class ImportStock {
         this.Im_date = Im_date;
     }
 
-   
-    public String getIm_fishname() {
-        return Im_fishname;
+    public List<FishImport> getFishimport() {
+        return fishimport;
     }
 
-    public void setIm_fishname(String Im_fishname) {
-        this.Im_fishname = Im_fishname;
-    }
-
-    public float getIm_qty() {
-        return Im_qty;
-    }
-
-    public void setIm_qty(float Im_qty) {
-        this.Im_qty = Im_qty;
-    }
-
-    public float getIm_amt() {
-        return Im_amt;
-    }
-
-    public void setIm_amt(float Im_amt) {
-        this.Im_amt = Im_amt;
-    }
-
-    public float getIm_totamt() {
-        return Im_totamt;
-    }
-
-    public void setIm_totamt(float Im_totamt) {
-        this.Im_totamt = Im_totamt;
+    public void setFishimport(List<FishImport> fishimport) {
+        this.fishimport = fishimport;
     }
 
     @Override
     public String toString() {
-        return "ImportStock{" + "Im_ID=" + Im_ID + ", Im_name=" + Im_name + ", Im_date=" + Im_date + ", Im_fishname=" + Im_fishname + ", Im_qty=" + Im_qty + ", Im_amt=" + Im_amt + ", Im_totamt=" + Im_totamt + '}';
+        return "ImportStock{" + "Im_ID=" + Im_ID + ", Im_name=" + Im_name + ", Im_date=" + Im_date + ", fishimport=" + fishimport + '}';
     }
+
+ 
+
+    
         
         
 }

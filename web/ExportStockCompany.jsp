@@ -21,7 +21,7 @@
     </head>
     <body class="backdesign vh-100 overflow-hidden">
         <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
-            <form>
+            <form method="post">
                 <h2 class="text-center mt-3">Export Stock To Company</h2>
                 <div class="row mt-4 mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
