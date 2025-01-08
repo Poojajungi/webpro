@@ -18,8 +18,6 @@ public class ImportStock {
         private int Im_ID;
         private String Im_name;
         private String Im_date;
-        @OneToMany(mappedBy = "importstock")
-        private List<FishImport> fishimport = new ArrayList<FishImport>();
 
     public int getIm_ID() {
         return Im_ID;
@@ -45,17 +43,17 @@ public class ImportStock {
         this.Im_date = Im_date;
     }
 
-    public List<FishImport> getFishimport() {
-        return fishimport;
-    }
-
-    public void setFishimport(List<FishImport> fishimport) {
-        this.fishimport = fishimport;
-    }
+//    public List<FishImport> getFishimport() {
+//        return fishimport;
+//    }
+//
+//    public void setFishimport(List<FishImport> fishimport) {
+//        this.fishimport = fishimport;
+//    }
 
     @Override
     public String toString() {
-        return "ImportStock{" + "Im_ID=" + Im_ID + ", Im_name=" + Im_name + ", Im_date=" + Im_date + ", fishimport=" + fishimport + '}';
+        return "ImportStock{" + "Im_ID=" + Im_ID + ", Im_name=" + Im_name + ", Im_date=" + Im_date  + '}';
     }
 
  

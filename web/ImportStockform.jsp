@@ -1,4 +1,9 @@
 
+<%@page import="org.hibernate.Query"%>
+<%@page import="org.hibernate.Session"%>
+<%@page import="org.hibernate.SessionFactory"%>
+<%@page import="model.fishnames"%>
+<%@page import="org.hibernate.cfg.Configuration"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Date"%>
@@ -10,6 +15,7 @@
     List<Float> qty = new ArrayList<Float>();
     List<Float> amt = new ArrayList<Float>();
     List<Float> tamt = new ArrayList<Float>();
+    crud cr = new crud();
 %>
 
 <!DOCTYPE html>
@@ -23,23 +29,13 @@
         <title>JSP Page</title>
         <script type="text/javascript">
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const selectedOption = urlParams.get('mySelect');
-            // Select the option in the dropdown
-            const selectElement = document.getElementById('mySelect');
-            for (let i = 0; i < selectElement.options.length; i++) {
-            if (selectElement.options[i].value === selectedOption) {
-            selectElement.options[i].selected = true;
-            break;
-            }
-            }
-
             function calculateTotal(){
             const a = parseFloat(document.getElementById("num1").value);
             const b = parseFloat(document.getElementById("num2").value);
             document.getElementById("total").value = a * b;
             }
             function newtables() {
+
             var table = document.getElementById("myTable").getElementsByTagName('tbody')[0];
             var row = table.insertRow();
             var cell1 = row.insertCell(0);
@@ -56,28 +52,13 @@
             document.getElementByName("ImportAmt").value = null;
             document.getElementByName("ImportTAmt").value = null;
             }
-            function tablehides(){
-            var table = document.getElementById("myTable");
-            if (table.style.display === "none") {
-            table.style.display = "table";
-            } else {
-            table.style.display = "none";
-            }
-            }
-
-            function myclear(){
-            // Remove the current URL parameters
-            window.history.pushState({}, document.title, window.location.pathname);
-            window.location.reload();
-            }
-
         </script>
     </head>
-    <% 
+    <%
         String userInput = request.getParameter("boat/owner");
         String d = request.getParameter("ImportDate");
-//        l.add(request.getParameter("boat/owner"));
-%>
+        int ids = cr.getIds() + 1;
+    %>
     <body class="backdesign vh-100 overflow-hidden">
         <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
             <form>
@@ -98,11 +79,27 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control" name="fish" id="fishname" >
+                        <select class="form-select" name="fish" id="fishname" >
                             <option>--Select Fish Type--</option>
-                            <option value="One">One</option>
-                            <option value="Two">Two</option>
-                            <option value="Three">Three</option>
+                            <!--                            <option value="One">One</option>
+                                                        <option value="Two">Two</option>
+                                                        <option value="Three">Three</option>-->
+                            <%
+                                Configuration con = new Configuration().configure().addAnnotatedClass(fishnames.class);
+                                SessionFactory sf = con.buildSessionFactory();
+                                Session sess = sf.openSession();
+                                sess.beginTransaction();
+                                Query q1 = sess.createQuery("from fishnames");
+                                List<fishnames> l1 = q1.list();
+                                for(fishnames obj : l1){
+                                    %>
+                                    <option value="<%= obj.getEng_name() %>"><%= obj.getEng_name() %></option>
+                            <%
+                                }
+                                sess.getTransaction().commit();
+                                sess.close();
+                                sf.close();
+                            %>
                         </select>
                     </div>
 
@@ -126,57 +123,48 @@
 
                 <div class="row">
                     <div class="col-md-6 col-lg-6 col-sm-12 formmain">
-                        <input type="number" name="idd" placeholder=" " id="total" class="form-control textbox" value=""  />
+                        <input type="number" name="idd" placeholder=" " id="total" class="form-control textbox" value="<%= ids != 0 ? ids : ""%>"  readonly/>
                         <label  class="form-labeline">Reference Id</label>
 
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-6 text-center">
-                        <button type="submit" class="btn btn-light fw-bold" onclick="newtables()" name="Addbtn">Add</button>
-                        <input type="submit" name="ImportBtn" value="Import" class="btn btn-primary fw-bold" />
-                        <input type="button" value="Refresh" onclick="myclear()"/>
-                        <!--<input type="button" name="btns" value="Click" onclick="tablehides()"/>-->
+                        <button type="submit" class="btn btn-light fw-bold"  name="Addbtn">Add</button>
+                        <input type="submit" name="ImportBtn" value="Import"  class="btn btn-primary fw-bold" />
                     </div>
                 </div>
 
-                <!--                <div>
-                                    <table class="table table-bordered mt-2 table-sm"   id="myTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Fish Name</th>
-                                                <th>Quantity</th>
-                                                <th>Amount</th>
-                                                <th>Total Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>-->
+
             </form>
         </div>
     </body>
 </html>
 <%
+
     if (request.getParameter("ImportBtn") != null) {
+        int id = Integer.parseInt(request.getParameter("idd"));
         String boat = request.getParameter("boat/owner");
         String dat = request.getParameter("ImportDate");
-//   out.print(boat);
-        crud cr = new crud();
-        if (cr.ImportAdd(boat, dat, fish, qty, amt, tamt) > 0) {
+        if (cr.ImportAdd(id, boat, dat, fish, qty, amt, tamt) > 0) {
             out.print("<script>alert(' Done.')</script>");
+//            response.sendRedirect("ViewImport.jsp");
         } else {
             out.print("<script>alert('Try Again')</script>");
         }
         fish.clear();
         amt.clear();
         tamt.clear();
-    } 
-   else if (request.getParameter("Addbtn") != null) {
+        String url = request.getRequestURL().toString();
+        if (request.getQueryString() != null) {
+            int questionMarkIndex = url.indexOf("?");
+            if (questionMarkIndex != -1) {
+                url = url.substring(0, questionMarkIndex);
+            }
+        }
+        response.sendRedirect(url);
+    } else if (request.getParameter("Addbtn") != null) {
         fish.add(request.getParameter("fish"));
         qty.add(Float.parseFloat(request.getParameter("ImportQty")));
         amt.add(Float.parseFloat(request.getParameter("ImportAmt")));
         tamt.add(Float.parseFloat(request.getParameter("ImportTAmt")));
     }
-
 %>
-
-

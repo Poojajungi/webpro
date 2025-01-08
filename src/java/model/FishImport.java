@@ -18,9 +18,7 @@ public class FishImport {
     private float fish_qty;
     private float fish_amt;
     private float fish_totamt;
-    @ManyToOne
-    @JoinColumn
-    private ImportStock importstock;
+    private int Im_Id;
 
     public int getFish_Id() {
         return fish_Id;
@@ -62,17 +60,18 @@ public class FishImport {
         this.fish_totamt = fish_totamt;
     }
 
-    public ImportStock getImportstock() {
-        return importstock;
+    public int getIm_Id() {
+        return Im_Id;
     }
 
-    public void setImportstock(ImportStock importstock) {
-        this.importstock = importstock;
+    public void setIm_Id(int Im_Id) {
+        this.Im_Id = Im_Id;
     }
+    
 
     @Override
     public String toString() {
-        return "FishImport{" + "fish_Id=" + fish_Id + ", fish_name=" + fish_name + ", fish_qty=" + fish_qty + ", fish_amt=" + fish_amt + ", fish_totamt=" + fish_totamt + ", importstock=" + importstock + '}';
+        return "FishImport{" + "fish_Id=" + fish_Id + ", fish_name=" + fish_name + ", fish_qty=" + fish_qty + ", fish_amt=" + fish_amt + ", fish_totamt=" + fish_totamt + ", Im_Id=" + Im_Id + '}';
     }
 
     

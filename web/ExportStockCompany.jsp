@@ -1,4 +1,10 @@
 
+<%@page import="java.util.List"%>
+<%@page import="org.hibernate.Query"%>
+<%@page import="org.hibernate.Session"%>
+<%@page import="org.hibernate.SessionFactory"%>
+<%@page import="model.*"%>
+<%@page import="org.hibernate.cfg.Configuration"%>
 <%@page import="model.crud"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,9 +19,9 @@
         <title>Export Stock To Company</title>
         <script>
             function calculateTotal(){
-                const a = parseFloat(document.getElementById("num1").value);
-                const b = parseFloat(document.getElementById("num2").value);
-                document.getElementById("total").value = a*b;
+            const a = parseFloat(document.getElementById("num1").value);
+            const b = parseFloat(document.getElementById("num2").value);
+            document.getElementById("total").value = a * b;
             }
         </script>
     </head>
@@ -40,10 +46,23 @@
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <select class="form-control" name="Exportfish">
-                            <option value="one">--Select Fish Type--</option>
-                            <option value="one">One</option>
-                            <option value="one">Two</option>
-                            <option value="one">Three</option>
+                            <option value="one" >--Select Fish Type--</option>
+                            <%
+                                Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class);
+                                SessionFactory sf = con.buildSessionFactory();
+                                Session sess = sf.openSession();
+                                sess.beginTransaction();
+                                Query q1 = sess.createQuery("select distinct fish_name from FishImport");
+                                List<String> l1 = q1.list();
+                                for (String f : l1) {
+//                                   String nm = f;
+                            %>
+                            <option value=<%=f%>><%= f %></option>
+                            <%
+                                }
+                                sess.getTransaction().commit();
+                                sess.close();
+                            %>
                         </select>
                     </div>
 
@@ -76,20 +95,19 @@
 </html>
 
 <%
-    if (request.getParameter("ExportBtn")!=null) {
-            String com = request.getParameter("Exportcompany");
-            String fis = request.getParameter("Exportfish");
-            String dat = request.getParameter("ExportDate");
-            float qty = Float.parseFloat(request.getParameter("ExportQty"));
-            float am = Float.parseFloat(request.getParameter("ExportAmt"));
-            float tam = Float.parseFloat(request.getParameter("ExportTamt"));
-            
-            crud cr = new crud();
-            if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam)>0) {
-                    out.print("<script>alert('Export Successfully Done.')</script>");
-                }
-            else{
-                out.print("Try Again");
-            }
+    if (request.getParameter("ExportBtn") != null) {
+        String com = request.getParameter("Exportcompany");
+        String fis = request.getParameter("Exportfish");
+        String dat = request.getParameter("ExportDate");
+        float qty = Float.parseFloat(request.getParameter("ExportQty"));
+        float am = Float.parseFloat(request.getParameter("ExportAmt"));
+        float tam = Float.parseFloat(request.getParameter("ExportTamt"));
+
+        crud cr = new crud();
+        if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam) > 0) {
+            out.print("<script>alert('Export Successfully Done.')</script>");
+        } else {
+            out.print("Try Again");
         }
+    }
 %>
