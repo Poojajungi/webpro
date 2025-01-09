@@ -6,6 +6,5 @@
     crud cr = new crud();
 //    int i = cr.TotalstocksMethod();
 //    out.print(i + " Row Inserted.");
-
-        out.print(cr.TotalStockUpdate("Four", 1, 1));
+    cr.ExportMinus("Two", 1);
 %>

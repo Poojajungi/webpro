@@ -81,9 +81,6 @@
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <select class="form-select" name="fish" id="fishname" >
                             <option>--Select Fish Type--</option>
-                            <!--                            <option value="One">One</option>
-                                                        <option value="Two">Two</option>
-                                                        <option value="Three">Three</option>-->
                             <%
                                 Configuration con = new Configuration().configure().addAnnotatedClass(fishnames.class);
                                 SessionFactory sf = con.buildSessionFactory();

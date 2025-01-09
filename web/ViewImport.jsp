@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <table class="table table-bordered  mt-3 table-sm table-striped border-dark" id="tbls">
+                <table class="table table-bordered  mt-3 table-sm table-striped border-dark table-hover" id="tbls">
                     <tr class="text-center">
                         <th>Sr.no</th>
                         <th>Fish Name</th>
@@ -58,7 +58,6 @@
                         Query q1 = sess.createQuery("from FishImport f,ImportStock i where i.Im_ID = f.Im_Id ");
                         List<Object[]> l = q1.list();
                         for (Object[] row : l) {
-                            //                            int idss = row.getFish_Id();
                             FishImport f = (FishImport) row[0];
                             ImportStock i = (ImportStock) row[1];
                     %>
@@ -70,7 +69,6 @@
                         <td><%= f.getFish_totamt()%></td>
                         <td><%= i.getIm_name()%></td>
                         <td><%= i.getIm_date()%></td>
-                        <!--<td class="text-center" ><a href="ViewImport.jsp?id=>View Details</a></td>-->
                     </tr>
                     <%
                         }
@@ -94,9 +92,7 @@
                     %>
 
                 </table>
-                <!--
-                                <div>
-                                </div>-->
+
             </form> 
         </div>
     </body>

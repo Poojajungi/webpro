@@ -234,18 +234,7 @@
                     <p class="text-white text-center mt-1 mb-1" style="font-size: 15px;">Developed by <font class="text-warning">PMD</font></p>
                 </div>
         </footer>
-        <!--        <script>
-                    // JavaScript to show and hide the submenu on hover
-                    const submenu = document.getElementById('submenu');
-                    const submenuDropdown = submenu.querySelector('.dropdown-menu');
-                    // Show submenu on mouse enter
-                    submenu.addEventListener('mouseenter', () = > {
-                    submenuDropdown.style.display = 'block';
-                    });
-                    // Hide submenu on mouse leave
-                    submenu.addEventListener('mouseleave', () = > {
-                    submenuDropdown.style.display = 'none';
-                    });
-                </script>-->
+       
     </body>
 </html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />

@@ -155,4 +155,48 @@ public class crud {
             return 0;
         }
     }
+
+    public int ExportMinus(String nm, int qty) {
+        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(TotalStock.class);
+        SessionFactory sf = config.buildSessionFactory();
+        Session session = sf.openSession();
+        TotalStock totstock = new TotalStock();
+        try {
+            session.beginTransaction();
+            Query q1 = session.createQuery("from FishImport where fish_name like '%" + nm + "%'");
+            Query q2 = session.createQuery("from TotalStock where stock_name like '%" + nm + "%'");
+            List<FishImport> ft = q1.list();
+            List<TotalStock> t = q2.list();
+            for (int i = 0; i < ft.size(); i++) {
+                FishImport fish = (FishImport) session.get(FishImport.class, ft.get(i).getFish_Id());
+                if (ft.get(i).getFish_qty() != 0) {
+                    fish.setFish_qty(ft.get(i).getFish_qty() - qty);
+                    session.update(fish);
+                    fish.setFish_totamt(ft.get(i).getFish_qty() * ft.get(i).getFish_amt());
+                    String hql = "UPDATE TotalStock  SET stock_qty = "
+                            + "(SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name = :fishName),"
+                            + "stock_totamt = (SELECT SUM(fish_totamt) FROM FishImport  WHERE fish_name = :fishName)"
+                            + "WHERE stock_name = :fishName";
+
+                    Query query = session.createQuery(hql);
+                    query.setParameter("fishName", nm);
+
+                    int updatedRows = query.executeUpdate();
+                    session.getTransaction().commit();
+                    session.close();
+                    sf.close();
+                    break;
+                } else {
+                    session.delete(fish);
+                    continue;
+                }
+            }
+//            System.out.println(q1.uniqueResult());
+            return 1;
+        } catch (Exception e) {
+            System.out.println(e);
+            session.getTransaction().rollback();
+            return 0;
+        }
+    }
 }
