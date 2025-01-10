@@ -6,6 +6,8 @@
 <%@page import="model.*"%>
 <%@page import="org.hibernate.cfg.Configuration"%>
 <%@page import="model.crud"%>
+<%!  String message = null;
+    String alertType = "info";%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -27,7 +29,7 @@
     </head>
     <body class="backdesign vh-100 overflow-hidden">
         <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
-            <form method="post">
+            <form>
                 <h2 class="text-center mt-3">Export Stock To Company</h2>
                 <div class="row mt-4 mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
@@ -55,9 +57,8 @@
                                 Query q1 = sess.createQuery("select distinct fish_name from FishImport");
                                 List<String> l1 = q1.list();
                                 for (String f : l1) {
-//                                   String nm = f;
                             %>
-                            <option value=<%=f%>><%= f %></option>
+                            <option value=<%=f%>><%= f%></option>
                             <%
                                 }
                                 sess.getTransaction().commit();
@@ -86,28 +87,94 @@
 
                 <div class="row mt-4">
                     <div class="col-md-12 col-lg-12 col-sm-12 text-center">
-                        <input type="submit" name="ExportBtn" value="Export" class="btn btn-primary"/>
+                        <input type="submit" name="ExportBtn" value="Export" class="btn btn-primary" />
                     </div>
                 </div>
             </form>
         </div>
+
+
+        <%
+            if (request.getParameter("ExportBtn") != null) {
+                String com = request.getParameter("Exportcompany");
+                String fis = request.getParameter("Exportfish");
+                String dat = request.getParameter("ExportDate");
+                float qty = Float.parseFloat(request.getParameter("ExportQty"));
+                float am = Float.parseFloat(request.getParameter("ExportAmt"));
+                float tam = Float.parseFloat(request.getParameter("ExportTamt"));
+
+                crud cr = new crud();
+                if (!cr.TotalQuantity(fis, qty).equals(0.0)) {
+                    if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam) > 0) {
+                        if (cr.ExportMinus(fis, qty) > 0) {
+                            message = "Export Successfully done.";
+                            alertType = "success";
+                        }
+                    } else {
+                        message = "Try Again";
+                        alertType = "danger";
+                    }
+                } else {
+                    message = "OUT OF STOCK \n Total Stock is : " + cr.TotalQuantity(fis, qty);
+                    alertType = "danger";
+                }
+
+            } else {
+//                message = "Try Again";
+//                alertType = "danger";
+            }
+        %>
+
+        <!-- Bootstrap Modal -->
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+
+                        <%
+                            if (alertType == "danger") {
+                        %>
+                        <img  src="CSS/Images/tryag.png" height="70px" width="70px"/>
+
+                        <%
+                        } else {
+                        %>
+                        <img  src="CSS/Images/succes.png" height="70px" width="70px"/>
+                        <%
+                            }
+                        %>
+                        <p class="mt-2 mb-0 fw-bold fs-5"><%= message != null ? message : "No message available."%></p>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <%
+                            if (alertType == "danger") {
+                        %>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="okButton" >Okay</button>
+
+                        <%
+                        } else {
+                        %>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="okButton" >Okay</button>
+                        <%
+                            }
+                        %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            <% if (message != null) { %>
+            document.addEventListener("DOMContentLoaded", function () {
+            const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
+            alertModal.show();
+            });
+            document.getElementById("okButton").addEventListener("click", function () {
+            // Remove query parameters from the URL
+            const baseUrl = window.location.origin + window.location.pathname;
+            history.replaceState(null, "", baseUrl);
+            });
+            <% }%>
+        </script>
     </body>
 </html>
-
-<%
-    if (request.getParameter("ExportBtn") != null) {
-        String com = request.getParameter("Exportcompany");
-        String fis = request.getParameter("Exportfish");
-        String dat = request.getParameter("ExportDate");
-        float qty = Float.parseFloat(request.getParameter("ExportQty"));
-        float am = Float.parseFloat(request.getParameter("ExportAmt"));
-        float tam = Float.parseFloat(request.getParameter("ExportTamt"));
-
-        crud cr = new crud();
-        if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam) > 0) {
-            out.print("<script>alert('Export Successfully Done.')</script>");
-        } else {
-            out.print("Try Again");
-        }
-    }
-%>

@@ -16,6 +16,8 @@
     List<Float> amt = new ArrayList<Float>();
     List<Float> tamt = new ArrayList<Float>();
     crud cr = new crud();
+    String message = null;
+    String alertType = "info";
 %>
 
 <!DOCTYPE html>
@@ -28,12 +30,13 @@
         <link rel="stylesheet" href="CSS/stock.css"/>
         <title>JSP Page</title>
         <script type="text/javascript">
-
             function calculateTotal(){
-            const a = parseFloat(document.getElementById("num1").value);
-            const b = parseFloat(document.getElementById("num2").value);
+            const a = document.getElementById("num1").value;
+            const b = document.getElementById("num2").value;
             document.getElementById("total").value = a * b;
             }
+            
+
             function newtables() {
 
             var table = document.getElementById("myTable").getElementsByTagName('tbody')[0];
@@ -65,12 +68,32 @@
                 <h2 class="text-center mt-3">Import Stock</h2>
                 <div class="row mt-4 mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control" name="boat/owner"  required>
-                            <option >--Select Boat/Owner--</option>
-                            <option value="one">One</option>
+                        <select class="form-control" name="boat/owner" id="boatNames" required>
+                            <option value="" disabled selected>--Select Boat/Owner--</option>
+                            <option value="one" >One</option>
                             <option value="two">Two</option>
                             <option value="three">Three</option>
                         </select>
+                        <!--                        <script>
+                                                    function initializeDropdownPersistence() {
+                                                    const dropdown = document.getElementById("boatNames");
+                                                    // Restore the selected value from localStorage
+                                                    const savedValue = localStorage.getItem("selectedOption");
+                                                    if (savedValue) {
+                                                    dropdown.value = savedValue;
+                                                    }
+                        
+                                                    // Save the selected value to localStorage whenever it changes
+                                                    dropdown.addEventListener("change", () = > {
+                                                    localStorage.setItem("selectedOption", dropdown.value);
+                                                    });
+                                                    }
+                        
+                                                    // Call the function when DOM is loaded
+                                                    document.addEventListener("DOMContentLoaded", () = > {
+                                                    initializeDropdownPersistence();
+                                                    });
+                                                </script>-->
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <input type="date" name="ImportDate"  class="form-control" value="<%= d != null ? d : ""%>" />
@@ -79,8 +102,8 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-select" name="fish" id="fishname" >
-                            <option>--Select Fish Type--</option>
+                        <select class="form-control" name="fish" id="fishname" >
+                            <option value="" disabled selected>--Select Fish Type--</option>
                             <%
                                 Configuration con = new Configuration().configure().addAnnotatedClass(fishnames.class);
                                 SessionFactory sf = con.buildSessionFactory();
@@ -88,9 +111,9 @@
                                 sess.beginTransaction();
                                 Query q1 = sess.createQuery("from fishnames");
                                 List<fishnames> l1 = q1.list();
-                                for(fishnames obj : l1){
-                                    %>
-                                    <option value="<%= obj.getEng_name() %>"><%= obj.getEng_name() %></option>
+                                for (fishnames obj : l1) {
+                            %>
+                            <option value="<%= obj.getEng_name()%>"><%= obj.getEng_name()%></option>
                             <%
                                 }
                                 sess.getTransaction().commit();
@@ -126,42 +149,92 @@
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-6 text-center">
                         <button type="submit" class="btn btn-light fw-bold"  name="Addbtn">Add</button>
-                        <input type="submit" name="ImportBtn" value="Import"  class="btn btn-primary fw-bold" />
+                        <input type="submit" name="ImportBtn" value="Import"  class="btn btn-primary fw-bold"  />
                     </div>
                 </div>
 
 
             </form>
         </div>
+
+        <%
+
+            if (request.getParameter("ImportBtn") != null) {
+                int id = Integer.parseInt(request.getParameter("idd"));
+                String boat = request.getParameter("boat/owner");
+                String dat = request.getParameter("ImportDate");
+                if (cr.ImportAdd(id, boat, dat, fish, qty, amt, tamt) > 0) {
+                    message = "Fish Imported Successfully.";
+                    alertType = "success";
+                } else {
+                    message = "Try Again";
+                    alertType = "danger";
+                }
+                fish.clear();
+                amt.clear();
+                tamt.clear();
+                request.setAttribute("ImportDate", null);
+            } else if (request.getParameter("Addbtn") != null) {
+                fish.add(request.getParameter("fish"));
+                qty.add(Float.parseFloat(request.getParameter("ImportQty")));
+                amt.add(Float.parseFloat(request.getParameter("ImportAmt")));
+                tamt.add(Float.parseFloat(request.getParameter("ImportTAmt")));
+            }
+        %>
+        <!-- Bootstrap Modal -->
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+
+                        <%
+                            if (alertType == "danger") {
+                        %>
+                        <img  src="CSS/Images/tryag.png" height="70px" width="70px"/>
+
+                        <%
+                        } else {
+                        %>
+                        <img  src="CSS/Images/succes.png" height="70px" width="70px"/>
+                        <%
+                            }
+                        %>
+                        <p class="mt-2 mb-0 fw-bold fs-5"><%= message != null ? message : "No message available."%></p>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <%
+                            if (alertType == "danger") {
+                        %>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="okButton" >Okay</button>
+
+                        <%
+                        } else {
+                        %>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="okButton" >Okay</button>
+                        <%
+                            }
+                        %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% if (message != null) { %>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            // Check if the modal has already been shown
+            if (!sessionStorage.getItem("modalShown")) {
+            const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
+            alertModal.show();
+            sessionStorage.setItem("modalShown", "true"); // Mark modal as shown
+            }
+            });
+            document.getElementById("okButton").addEventListener("click", function () {
+            const baseUrl = window.location.origin + window.location.pathname;
+            window.location.replace(baseUrl); // Replaces current URL and refreshes
+            });
+        </script>
+        <% }%>
+
     </body>
 </html>
-<%
-
-    if (request.getParameter("ImportBtn") != null) {
-        int id = Integer.parseInt(request.getParameter("idd"));
-        String boat = request.getParameter("boat/owner");
-        String dat = request.getParameter("ImportDate");
-        if (cr.ImportAdd(id, boat, dat, fish, qty, amt, tamt) > 0) {
-            out.print("<script>alert(' Done.')</script>");
-//            response.sendRedirect("ViewImport.jsp");
-        } else {
-            out.print("<script>alert('Try Again')</script>");
-        }
-        fish.clear();
-        amt.clear();
-        tamt.clear();
-        String url = request.getRequestURL().toString();
-        if (request.getQueryString() != null) {
-            int questionMarkIndex = url.indexOf("?");
-            if (questionMarkIndex != -1) {
-                url = url.substring(0, questionMarkIndex);
-            }
-        }
-        response.sendRedirect(url);
-    } else if (request.getParameter("Addbtn") != null) {
-        fish.add(request.getParameter("fish"));
-        qty.add(Float.parseFloat(request.getParameter("ImportQty")));
-        amt.add(Float.parseFloat(request.getParameter("ImportAmt")));
-        tamt.add(Float.parseFloat(request.getParameter("ImportTAmt")));
-    }
-%>

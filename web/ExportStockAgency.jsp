@@ -1,5 +1,12 @@
 
-<%@page import="model.crud"%>
+<%@page import="java.util.List"%>
+<%@page import="org.hibernate.Query"%>
+<%@page import="org.hibernate.Session"%>
+<%@page import="org.hibernate.SessionFactory"%>
+<%@page import="model.*"%>
+<%@page import="org.hibernate.cfg.Configuration"%>
+<%!  String message = null;
+    String alertType = "info";%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -36,9 +43,21 @@
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <select class="form-control" name="ExportpFish">
                             <option value="one">--Select Fish Type--</option>
-                            <option value="one">One</option>
-                            <option value="one">Two</option>
-                            <option value="one">Three</option>
+                             <%
+                                Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class);
+                                SessionFactory sf = con.buildSessionFactory();
+                                Session sess = sf.openSession();
+                                sess.beginTransaction();
+                                Query q1 = sess.createQuery("select distinct fish_name from FishImport");
+                                List<String> l1 = q1.list();
+                                for (String f : l1) {
+                            %>
+                            <option value=<%=f%>><%= f%></option>
+                            <%
+                                }
+                                sess.getTransaction().commit();
+                                sess.close();
+                            %>
                         </select>
                     </div>
 
@@ -67,24 +86,87 @@
                 </div>
             </form>
         </div>
+         <%
+            if (request.getParameter("ExportABtn") != null) {
+                String com = request.getParameter("ExportpName");
+                String fis = request.getParameter("ExportpFish");
+                String dat = request.getParameter("ExportpDate");
+                float qty = Float.parseFloat(request.getParameter("ExportpQty"));
+                float am = Float.parseFloat(request.getParameter("ExportpAmt"));
+                float tam = Float.parseFloat(request.getParameter("ExportptAmt"));
+
+                crud cr = new crud();
+                if (!cr.TotalQuantity(fis, qty).equals(0.0)) {
+                    if (cr.ExportAgencyAdd(com, dat, fis, qty, am, tam) > 0) {
+                        if (cr.ExportMinus(fis, qty) > 0) {
+                            message = "Export Successfully done.";
+                            alertType = "success";
+                        }
+                    } else {
+                        message = "Try Again";
+                        alertType = "danger";
+                    }
+                } else {
+                    message = "OUT OF STOCK \n Total Stock is : " + cr.TotalQuantity(fis, qty);
+                    alertType = "danger";
+                }
+
+            } else {
+//                message = "Try Again";
+//                alertType = "danger";
+            }
+        %>
+
+        <!-- Bootstrap Modal -->
+        <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+
+                        <%
+                            if (alertType == "danger") {
+                        %>
+                        <img  src="CSS/Images/tryag.png" height="70px" width="70px"/>
+
+                        <%
+                        } else {
+                        %>
+                        <img  src="CSS/Images/succes.png" height="70px" width="70px"/>
+                        <%
+                            }
+                        %>
+                        <p class="mt-2 mb-0 fw-bold fs-5"><%= message != null ? message : "No message available."%></p>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <%
+                            if (alertType == "danger") {
+                        %>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="okButton" >Okay</button>
+
+                        <%
+                        } else {
+                        %>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="okButton" >Okay</button>
+                        <%
+                            }
+                        %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            <% if (message != null) { %>
+            document.addEventListener("DOMContentLoaded", function () {
+            const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
+            alertModal.show();
+            });
+            document.getElementById("okButton").addEventListener("click", function () {
+            // Remove query parameters from the URL
+            const baseUrl = window.location.origin + window.location.pathname;
+            history.replaceState(null, "", baseUrl);
+            });
+            <% }%>
+        </script>
     </body>
 </html>
-<%
-    if (request.getParameter("ExportABtn")!=null) {
-            String nm = request.getParameter("ExportpName");
-            String fis = request.getParameter("ExportpFish");
-            String dat = request.getParameter("ExportpDate");
-            float qty = Float.parseFloat(request.getParameter("ExportpQty"));
-            float am = Float.parseFloat(request.getParameter("ExportpAmt"));
-            float tam = Float.parseFloat(request.getParameter("ExportptAmt"));
-            
-            crud cr = new crud();
-            if (cr.ExportAgencyAdd(nm, dat, fis, qty, am, tam)>0) {
-                    out.print("<script>alert('Export Successfully Done.')</script>");
-                }
-            else{
-                out.print("Try Again");
-            }
-        }
-   
-%>

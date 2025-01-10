@@ -5,6 +5,7 @@
 <%@page import="org.hibernate.SessionFactory"%>
 <%@page import="org.hibernate.cfg.Configuration"%>
 <%@page import="model.*"%>
+<%! int p = 0;%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -40,59 +41,61 @@
                     </div>
                 </div>
 
-                <table class="table table-bordered  mt-3 table-sm table-striped border-dark table-hover" id="tbls">
-                    <tr class="text-center">
-                        <th>Sr.no</th>
-                        <th>Fish Name</th>
-                        <th>Quantity</th>
-                        <th>Amount</th>
-                        <th>Total Amount</th>
-                        <th class="col-2">Boat/Owner</th>
-                        <th>Date</th>
-                    </tr>
-                    <%
-                        Configuration configs = new Configuration().configure().addAnnotatedClass(ImportStock.class).addAnnotatedClass(FishImport.class);
-                        SessionFactory sf = configs.buildSessionFactory();
-                        Session sess = sf.openSession();
-                        sess.beginTransaction();
-                        Query q1 = sess.createQuery("from FishImport f,ImportStock i where i.Im_ID = f.Im_Id ");
-                        List<Object[]> l = q1.list();
-                        for (Object[] row : l) {
-                            FishImport f = (FishImport) row[0];
-                            ImportStock i = (ImportStock) row[1];
-                    %>
-                    <tr class="text-center">
-                        <td><%= f.getFish_Id()%></td> 
-                        <td><%= f.getFish_name()%></td>
-                        <td><%= f.getFish_qty()%></td>
-                        <td><%= f.getFish_amt()%></td>
-                        <td><%= f.getFish_totamt()%></td>
-                        <td><%= i.getIm_name()%></td>
-                        <td><%= i.getIm_date()%></td>
-                    </tr>
-                    <%
-                        }
+                <div style="overflow-y: auto;max-height: 500px;" class="mt-3">
+                    <table class="table table-bordered  mt-3 table-sm table-striped border-dark table-hover" id="tbls" >
+                        <tr class="text-center">
+                            <th>Sr.no</th>
+                            <th>Fish Name</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Total Amount</th>
+                            <th class="col-2">Boat/Owner</th>
+                            <th>Date</th>
+                        </tr>
+                        <%
+                            Configuration configs = new Configuration().configure().addAnnotatedClass(ImportStock.class).addAnnotatedClass(FishImport.class);
+                            SessionFactory sf = configs.buildSessionFactory();
+                            Session sess = sf.openSession();
+                            sess.beginTransaction();
+                            Query q1 = sess.createQuery("from FishImport f,ImportStock i where i.Im_ID = f.Im_Id ");
+                            List<Object[]> l = q1.list();
+                            
+                            for (Object[] row : l) {
+                                FishImport f = (FishImport) row[0];
+                                ImportStock i = (ImportStock) row[1];
+                        %>
+                        <tr class="text-center">
+                            <td><%= (++p) %></td> 
+                            <td><%= f.getFish_name()%></td>
+                            <td><%= f.getFish_qty()%></td>
+                            <td><%= f.getFish_amt()%></td>
+                            <td><%= f.getFish_totamt()%></td>
+                            <td><%= i.getIm_name()%></td>
+                            <td><%= i.getIm_date()%></td>
+                        </tr>
+                        <%
+                            }
 
-                        q1 = sess.createQuery("select sum(fish_qty),sum(fish_amt),sum(fish_totamt) from FishImport");
-                        List<Object[]> l2 = q1.list();
-                        for (Object[] row : l2) {
-                    %>
-                    <tr class="fw-bold">
-                        <td colspan="2" align="right" class="text-primary">Total</td>
-                        <td class="text-center"><%= row[0]%></td>
-                        <td class="text-center"><%= row[1]%></td>
-                        <td class="text-center"><%= row[2]%></td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <%
-                        }
-                        sess.getTransaction().commit();
-                        sess.close();
-                        sf.close();
-                    %>
+                            q1 = sess.createQuery("select sum(fish_qty),sum(fish_amt),sum(fish_totamt) from FishImport");
+                            List<Object[]> l2 = q1.list();
+                            for (Object[] row : l2) {
+                        %>
+                        <tr class="fw-bold">
+                            <td colspan="2" align="right" class="text-primary">Total</td>
+                            <td class="text-center"><%= row[0]%></td>
+                            <td class="text-center"><%= row[1]%></td>
+                            <td class="text-center"><%= row[2]%></td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <%
+                            }
+                            sess.getTransaction().commit();
+                            sess.close();
+                            sf.close();
+                        %>
 
-                </table>
-
+                    </table>
+                </div>
             </form> 
         </div>
     </body>

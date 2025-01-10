@@ -13,7 +13,7 @@
     text-shadow:0 0 0.3vw #383d52;
     text-transform: uppercase;
     user-select:none;
-    
+
 }
 
 .textdesign ::before{
@@ -24,7 +24,7 @@
     width: 0;
     height: 100%;
     color:#01fe87;
-   text-shadow:0 0 0.3vw #383d52;
+    text-shadow:0 0 0.3vw #383d52;
     border-right: 2px solid #01fe87;
     overflow: hidden;
     animation: animate 6s linear infinite;
@@ -40,16 +40,68 @@
     }
 }
 .slide-up {
-  animation: slideUp 5s ease-out;
+    animation: slideUp 5s ease-out;
 }
 
 @keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translatX(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0px);
-  }
+    0% {
+        opacity: 0;
+        transform: translatX(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+.mycontainer {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.mycontainer .glass {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    /*background: linear-gradient(white, transparent);*/
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    border-radius: 10px;
+    margin: 0 -45px;
+    backdrop-filter: blur(10px);
+    transform: rotate(calc(var(--r) * 1deg));
+}
+
+.mycontainer:hover .glass {
+    transform: rotate(0deg);
+    margin: 0 10px;
+}
+
+.mycontainer .glass::before {
+    content: attr(data-text);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+.mycontainer .glass svg {
+    font-size: 2.5em;
+    fill: #fff;
+}
+.myimg{
+    border-radius: 8px;
 }

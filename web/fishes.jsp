@@ -4,7 +4,5 @@
 <!DOCTYPE html>
 <%
     crud cr = new crud();
-//    int i = cr.TotalstocksMethod();
-//    out.print(i + " Row Inserted.");
-    cr.ExportMinus("Two", 1);
+    cr.TotalStockUpdate("Giant", 1, 1);
 %>

@@ -38,15 +38,20 @@ public class crud {
             int d = ims.getIm_ID();
             FishImport f = new FishImport();
             for (int i = 0; i < fishName.size(); i++) {
+//                String names = fishName.get(i).toString();
+//                float a = Float.parseFloat(qty.get(i).toString());
+//                float b = Float.parseFloat(tamt.get(i).toString());
                 f.setFish_name(fishName.get(i).toString());
                 System.out.println(f.getFish_name());
                 f.setFish_qty(Float.parseFloat(qty.get(i).toString()));
                 f.setFish_amt(Float.parseFloat(amt.get(i).toString()));
                 f.setFish_totamt(Float.parseFloat(tamt.get(i).toString()));
+//                TotalStockUpdate(names, a, b);
                 f.setIm_Id(d);
                 session.save(f);
                 session.clear();
             }
+            TotalStockUpdate();
             tx.commit();
             return 1;
         } catch (Exception e) {
@@ -131,20 +136,31 @@ public class crud {
         }
     }
 
-    public double TotalStockUpdate(String nm, float qty, float amt) {
+    public int TotalStockUpdate() {
         Configuration config = new Configuration().configure().addAnnotatedClass(TotalStock.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            Query q1 = session.createQuery("from TotalStock where stock_name like '%" + nm + "%'");
-            List<TotalStock> l = q1.list();
+//            Query q2 = session.createQuery("select stock_name from TotalStock where stock_name like '%" + nm + "%'");
+//            if (q2.uniqueResult() == null) {
+//                TotalStock t = new TotalStock();
+//                t.setStock_name(nm);
+//                t.setStock_qty(qty);
+//                t.setStock_totamt(amt);
+//                session.save(t);
+//            } else {
 
-            TotalStock t = l.get(0);
-            t.setStock_name(nm);
-            t.setStock_qty(t.getStock_qty() + qty);
-            t.setStock_totamt(t.getStock_totamt() + amt);
-            session.update(t);
+//                Query q1 = session.createQuery("from TotalStock where stock_name like '%" + nm + "%'");
+//                List<TotalStock> l = q1.list();
+//                TotalStock t = l.get(0);
+//                t.setStock_name(nm);
+//                t.setStock_qty(t.getStock_qty() + qty);
+//                t.setStock_totamt(t.getStock_totamt() + amt);
+                int r = session.createQuery("delete from TotalStock").executeUpdate();
+                TotalstocksMethod();
+//                session.update(t);
+//            }
             session.getTransaction().commit();
             session.close();
             sf.close();
@@ -156,11 +172,12 @@ public class crud {
         }
     }
 
-    public int ExportMinus(String nm, int qty) {
+    public int ExportMinus(String nm, float qty) {
         Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(TotalStock.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
         TotalStock totstock = new TotalStock();
+//        System.out.println(qty);
         try {
             session.beginTransaction();
             Query q1 = session.createQuery("from FishImport where fish_name like '%" + nm + "%'");
@@ -170,33 +187,62 @@ public class crud {
             for (int i = 0; i < ft.size(); i++) {
                 FishImport fish = (FishImport) session.get(FishImport.class, ft.get(i).getFish_Id());
                 if (ft.get(i).getFish_qty() != 0) {
+                    if (qty > ft.get(i).getFish_qty()) {
+                        float n = qty - ft.get(i).getFish_qty();
+                        fish.setFish_qty(0);
+                        qty = n;
+                    }
                     fish.setFish_qty(ft.get(i).getFish_qty() - qty);
                     session.update(fish);
                     fish.setFish_totamt(ft.get(i).getFish_qty() * ft.get(i).getFish_amt());
+                    System.out.println("done");
                     String hql = "UPDATE TotalStock  SET stock_qty = "
-                            + "(SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name = :fishName),"
-                            + "stock_totamt = (SELECT SUM(fish_totamt) FROM FishImport  WHERE fish_name = :fishName)"
+                            + "(SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name like '%" + nm + "%'),"
+                            + "stock_totamt = (SELECT SUM(fish_totamt) FROM FishImport  WHERE fish_name like '%" + nm + "%')"
                             + "WHERE stock_name = :fishName";
 
+//                    System.out.println(hql);
+//                    System.out.println(qty + nm);
                     Query query = session.createQuery(hql);
                     query.setParameter("fishName", nm);
-
+//                    System.out.println(hql);
                     int updatedRows = query.executeUpdate();
-                    session.getTransaction().commit();
-                    session.close();
-                    sf.close();
+//                    System.out.println(updatedRows);
                     break;
                 } else {
                     session.delete(fish);
                     continue;
                 }
             }
-//            System.out.println(q1.uniqueResult());
+            session.getTransaction().commit();
             return 1;
         } catch (Exception e) {
             System.out.println(e);
             session.getTransaction().rollback();
             return 0;
+        } finally {
+            session.close();
+            sf.close();
+        }
+    }
+
+    public Object TotalQuantity(String nm, float qty) {
+        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class);
+        SessionFactory sf = config.buildSessionFactory();
+        Session session = sf.openSession();
+        try {
+            session.beginTransaction();
+            Query q3 = session.createQuery("SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name like '%" + nm + "%'");
+            Object p = q3.uniqueResult();
+            session.getTransaction().commit();
+            return p;
+        } catch (Exception e) {
+            System.out.println(e);
+            session.getTransaction().rollback();
+            return 0;
+        } finally {
+            session.close();
+            sf.close();
         }
     }
 }
