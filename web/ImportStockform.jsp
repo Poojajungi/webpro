@@ -30,31 +30,30 @@
         <link rel="stylesheet" href="CSS/stock.css"/>
         <title>JSP Page</title>
         <script type="text/javascript">
+
             function calculateTotal(){
             const a = document.getElementById("num1").value;
             const b = document.getElementById("num2").value;
             document.getElementById("total").value = a * b;
             }
-            
 
-            function newtables() {
-
-            var table = document.getElementById("myTable").getElementsByTagName('tbody')[0];
-            var row = table.insertRow();
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-            cell1.innerHTML = document.getElementsByName('fish')[0].value;
-            cell2.innerHTML = document.getElementsByName('ImportQty')[0].value;
-            cell3.innerHTML = document.getElementsByName('ImportAmt')[0].value;
-            cell4.innerHTML = document.getElementsByName('ImportTAmt')[0].value;
-            // Clear input fields
-            document.getElementByName("fish").value = null;
-            document.getElementByName("ImportQty").value = null;
-            document.getElementByName("ImportAmt").value = null;
-            document.getElementByName("ImportTAmt").value = null;
+            function ShowBtn() {
+            document.getElementById("btn2").disabled = false;
             }
+
+            function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+            }
+
+            // Automatically select the dropdown value based on the URL
+            document.addEventListener("DOMContentLoaded", function () {
+            const selectedValue = getQueryParam("boat/owner"); // Get 'boat/owner' from URL
+            if (selectedValue) {
+            const dropdown = document.getElementById("dropdown");
+            dropdown.value = selectedValue; // Set the value in the dropdown
+            }
+            });
         </script>
     </head>
     <%
@@ -68,7 +67,7 @@
                 <h2 class="text-center mt-3">Import Stock</h2>
                 <div class="row mt-4 mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control" name="boat/owner" id="boatNames" required>
+                        <select class="form-control"  name="boat/owner" id="dropdown" required>
                             <option value="" disabled selected>--Select Boat/Owner--</option>
                             <option value="one" >One</option>
                             <option value="two">Two</option>
@@ -148,8 +147,8 @@
 
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-6 text-center">
-                        <button type="submit" class="btn btn-light fw-bold"  name="Addbtn">Add</button>
-                        <input type="submit" name="ImportBtn" value="Import"  class="btn btn-primary fw-bold"  />
+                        <button type="submit" class="btn btn-light fw-bold"  name="Addbtn" onclick="ShowBtn()">Add</button>
+                        <input type="submit" name="ImportBtn" value="Import" id="btn2" class="btn btn-primary fw-bold"   />
                     </div>
                 </div>
 
@@ -221,6 +220,7 @@
 
         <% if (message != null) { %>
         <script>
+
             document.addEventListener("DOMContentLoaded", function () {
             // Check if the modal has already been shown
             if (!sessionStorage.getItem("modalShown")) {
@@ -233,6 +233,8 @@
             const baseUrl = window.location.origin + window.location.pathname;
             window.location.replace(baseUrl); // Replaces current URL and refreshes
             });
+
+
         </script>
         <% }%>
 
