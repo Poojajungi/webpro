@@ -57,21 +57,23 @@
         </script>
     </head>
     <%
+        String selectedValue = request.getParameter("boat/owner");
         String userInput = request.getParameter("boat/owner");
         String d = request.getParameter("ImportDate");
         int ids = cr.getIds() + 1;
     %>
     <body class="backdesign vh-100 overflow-hidden">
         <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
-            <form>
+            <form method="post">
                 <h2 class="text-center mt-3">Import Stock</h2>
                 <div class="row mt-4 mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control"  name="boat/owner" id="dropdown" required>
-                            <option value="" disabled selected>--Select Boat/Owner--</option>
-                            <option value="one" >One</option>
-                            <option value="two">Two</option>
-                            <option value="three">Three</option>
+
+                        <select class="form-control" name="boat/owner" id="dropdown" required>
+                            <option value="" disabled <%= selectedValue == null ? "selected" : ""%>>--Select Boat/Owner--</option>
+                            <option value="one" <%= "one".equals(selectedValue) ? "selected" : ""%>>One</option>
+                            <option value="two" <%= "two".equals(selectedValue) ? "selected" : ""%>>Two</option>
+                            <option value="three" <%= "three".equals(selectedValue) ? "selected" : ""%>>Three</option>
                         </select>
                         <!--                        <script>
                                                     function initializeDropdownPersistence() {

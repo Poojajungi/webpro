@@ -226,14 +226,22 @@ public class crud {
         }
     }
 
-    public Object TotalQuantity(String nm, float qty) {
+    public float TotalQuantity(String nm) {
         Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
+        float p = 0;
         try {
             session.beginTransaction();
             Query q3 = session.createQuery("SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name like '%" + nm + "%'");
-            Object p = q3.uniqueResult();
+////            Object p = q3.uniqueResult();
+//            List<FishImport> l1 = q3.list();
+//            float p = (float) session.get(FishImport.class,l1.get(0).getFish_qty());
+            Object result = q3.uniqueResult();
+
+        if (result != null) {
+            p = ((Number) result).floatValue(); // Convert result to float
+        }
             session.getTransaction().commit();
             return p;
         } catch (Exception e) {

@@ -17,11 +17,11 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="CSS/stock.css"/>
         <title>Export Stock To Agency/Person</title>
-           <script>
+        <script>
             function calculateTotal(){
-                const a = parseFloat(document.getElementById("num1").value);
-                const b = parseFloat(document.getElementById("num2").value);
-                document.getElementById("total").value = a*b;
+            const a = parseFloat(document.getElementById("num1").value);
+            const b = parseFloat(document.getElementById("num2").value);
+            document.getElementById("total").value = a * b;
             }
         </script>
     </head>
@@ -43,7 +43,7 @@
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <select class="form-control" name="ExportpFish">
                             <option value="one">--Select Fish Type--</option>
-                             <%
+                            <%
                                 Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class);
                                 SessionFactory sf = con.buildSessionFactory();
                                 Session sess = sf.openSession();
@@ -86,7 +86,7 @@
                 </div>
             </form>
         </div>
-         <%
+        <%
             if (request.getParameter("ExportABtn") != null) {
                 String com = request.getParameter("ExportpName");
                 String fis = request.getParameter("ExportpFish");
@@ -96,7 +96,7 @@
                 float tam = Float.parseFloat(request.getParameter("ExportptAmt"));
 
                 crud cr = new crud();
-                if (!cr.TotalQuantity(fis, qty).equals(0.0)) {
+                if (cr.TotalQuantity(fis) > 0.0) {
                     if (cr.ExportAgencyAdd(com, dat, fis, qty, am, tam) > 0) {
                         if (cr.ExportMinus(fis, qty) > 0) {
                             message = "Export Successfully done.";
@@ -107,7 +107,7 @@
                         alertType = "danger";
                     }
                 } else {
-                    message = "OUT OF STOCK \n Total Stock is : " + cr.TotalQuantity(fis, qty);
+                    message = "OUT OF STOCK \n Total Stock is : " + cr.TotalQuantity(fis);
                     alertType = "danger";
                 }
 
@@ -164,7 +164,7 @@
             document.getElementById("okButton").addEventListener("click", function () {
             // Remove query parameters from the URL
             const baseUrl = window.location.origin + window.location.pathname;
-            history.replaceState(null, "", baseUrl);
+            window.location.replace(baseUrl); // Replaces current URL and refreshes
             });
             <% }%>
         </script>
