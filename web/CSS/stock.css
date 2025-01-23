@@ -4,7 +4,6 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-   
 }
 
 .formmain{
@@ -36,7 +35,3 @@
     font-family: sans-serif;
 }
 
-/*<div class=" formmain">
-                        <input type="number" name="ImportQty" placeholder=" " id="num1"  class="form-control textbox" oninput="calculateTotal()" />
-                        <label  class="form-labeline">Enter Quantity(KG)</label>
- </div>*/

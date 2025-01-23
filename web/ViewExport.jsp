@@ -17,8 +17,11 @@
         <link rel="stylesheet" href="CSS/stock.css"/>
 
     </head>
-    <body class="backdesign overflow-hidden vh-100">
-        <div class="container-fluid " >
+    <body class="backdesign vh-200 ">
+        <div>
+            <%@include file="homeNav.jsp" %>
+        </div>
+        <div class="container-fluid mb-3" >
             <form>
                 <h2 class="text-center mt-3 ">View Export Stock</h2>
                 <ul class="nav nav-tabs  justify-content-center mt-4 " id="myTab" role="tablist">
@@ -42,15 +45,15 @@
                                 </button>
                             </div>
                         </div>
-                        <div style="overflow-y: auto;max-height: 450px;" class="mt-3">
+                        <div style="overflow-y: auto;max-height: 400px;margin-bottom: 50px;" class="mt-3">
                             <table class="table table-bordered table-striped table-hover mt-3 table-sm border-dark" id="tbls">
                                 <tr class="text-center">
                                     <th>Sr.no</th>
-                                    <th>Fish Name</th>
+                                    <th class="col-3">Fish Name</th>
                                     <th>Quantity</th>
                                     <th>Amount</th>
                                     <th>Total Amount</th>
-                                    <th class="col-2">Company Name</th>
+                                    <th>Company Name</th>
                                     <th>Date</th>
                                 </tr>
                                 <%
@@ -107,7 +110,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div style="overflow-y: auto;max-height: 450px;" class="mt-3">
+                        <div style="overflow-y: auto;max-height: 400px;" class="mt-3">
                             <table class="table table-bordered mt-3 table-sm border-dark table-striped table-hover" id="tbl2" >
                                 <tr class="text-center">
                                     <th>Sr.no</th>
@@ -161,5 +164,7 @@
                     </div>
             </form> 
         </div>
+        </div>
+                                <%@include file="homeFooter.jsp" %>
     </body>
 </html>

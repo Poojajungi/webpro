@@ -29,8 +29,11 @@
 
         </script>
     </head>
-    <body class="backdesign vh-100 overflow-hidden">
-        <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
+    <body class="backdesign vh-200 ">
+        <div>
+            <%@include file="homeNav.jsp" %>
+        </div>
+        <div class="container border border-light shadow pb-4" style="width: 70%;border-radius: 15px;margin-top: 150px;margin-bottom: 150px;">
             <form method="post">
                 <h2 class="text-center mt-3">Export Stock To Company</h2>
                 <div class="row mt-4 mb-3">
@@ -89,7 +92,7 @@
 
                 <div class="row mt-4">
                     <div class="col-md-12 col-lg-12 col-sm-12 text-center">
-                        <input type="submit" name="ExportBtn" value="Export" class="btn btn-primary" />
+                        <input type="submit" name="ExportBtn" value="Export" id="Exp1" class="btn btn-primary" />
                     </div>
                 </div>
             </form>
@@ -108,7 +111,6 @@
                 float tam = Float.parseFloat(request.getParameter("ExportTamt"));
 
 //                int f = cr.TotalQuantity(fis, qty);
-                out.print(cr.TotalQuantity(fis));
                 if (cr.TotalQuantity(fis) > 0.0) {
                     if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam) > 0) {
                         if (cr.ExportMinus(fis, qty) > 0) {
@@ -168,66 +170,113 @@
             </div>
         </div>
 
+        <div class="modal fade" id="totalQuantityModal" tabindex="-1" aria-labelledby="totalQuantityModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                        <img  src="CSS/Images/st1.png" height="70px" width="70px"/>
+                        <h1 id="modalQuantityContent" class="fw-semibold fs-5  text-center mt-2 mb-0">Fetching data...</h1>
+                        <h1 id="modalQuantityContent1" class="fw-semibold fs-5  text-center mt-1"></h1>
+                        <div class=" d-flex justify-content-center">
+                            <button type="button" class="btn btn-success mt-3" data-bs-dismiss="modal">Okay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
+
+
+
+            let totalQuantity = 0; // Store the total quantity globally
+
+            document.getElementById("dropdown").addEventListener("change", function() {
+            console.log("dropdown changed.");
+            const selectedFish = this.value; // Get the selected fish type
+            if (selectedFish) {
+            // Get the total stock quantity for the selected fish
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "/finaljsp/getTotalQuantity?fishName=" + encodeURIComponent(selectedFish), true);
+            xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+            totalQuantity = parseFloat(xhr.responseText); // Parse the returned total stock quantity
+            if (!isNaN(totalQuantity)) {
+//            alert("Total Quantity of Stock is: " + totalQuantity);
+            document.getElementById("modalQuantityContent").textContent =
+                    "Total Quantity of Stock is: " + totalQuantity;
+            document.getElementById("modalQuantityContent").style.color = "green";
+            // Show the modal
+            const quantityModal = new bootstrap.Modal(document.getElementById("totalQuantityModal"));
+            quantityModal.show();
+            } else {
+            alert("Error retrieving total quantity.");
+            }
+            } else {
+            alert("Failed to retrieve data. Status: " + xhr.status);
+            }
+            }
+            };
+            xhr.send();
+            } else {
+            alert("Please select a valid fish type.");
+            }
+            });
+            document.getElementById("num1").addEventListener("focusout", function() {
+            console.log("quantity input changed.");
+            const enteredQuantity = parseFloat(this.value); // Get the entered quantity
+
+            if (!isNaN(enteredQuantity) && enteredQuantity > 0) {
+            // Check if the entered quantity exceeds available stock
+            if (enteredQuantity > totalQuantity) {
+//            alert("Entered quantity exceeds available stock. Available stock: " + totalQuantity);
+            document.getElementById("modalQuantityContent").innerHTML =
+                    "Entered quantity exceeds available stock.";
+            document.getElementById("modalQuantityContent").style.color = "red";
+            document.getElementById("modalQuantityContent1").innerHTML = "Available stock: " + totalQuantity;
+            document.getElementById("modalQuantityContent1").style.color = "green";
+            // Show the modal
+            const quantityModal = new bootstrap.Modal(document.getElementById("totalQuantityModal"));
+            quantityModal.show();
+            document.getElementById("num2").disabled = true;
+            document.getElementById("Exp1").disabled = true;
+            document.getElementById("Exp1").style.cursor = "not-allowed";
+            setTimeout(function() {
+            const inputField = document.getElementById("num1");
+            inputField.focus(); // Focus the input field
+            }, 5000);
+//                        document.getElementById("total").style.disabled = true;
+            } else {
+            console.log("Entered quantity is valid.");
+            document.getElementById("num2").disabled = false;
+            document.getElementById("Exp1").disabled = false;
+            document.getElementById("Exp1").style.cursor = "pointer";
+            }
+            } else {
+            document.getElementById("modalQuantityContent").innerHTML = "Please Enter the Valid Quantity !";
+            document.getElementById("modalQuantityContent").style.color = "red";
+            const quantityModal = new bootstrap.Modal(document.getElementById("totalQuantityModal"));
+            quantityModal.show();
+            }
+            });
             <% if (message != null) { %>
             document.addEventListener("DOMContentLoaded", function () {
             const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
             alertModal.show();
-            });
-            document.getElementById("okButton").addEventListener("click", function () {
+            const okButton = document.getElementById("okButton");
+            if (okButton) {
+            okButton.addEventListener("click", function () {
             // Remove query parameters from the URL
             const baseUrl = window.location.origin + window.location.pathname;
-            window.location.replace(baseUrl); // Replaces current URL and refreshes
+//                window.location.replace(baseUrl); // Replaces current URL and refreshes
+//                    window.location.replace(" ",baseUrl);
+            request.setAttribute("message", null);
+            });
+            }
             });
             <% }%>
-
-    
-    let totalQuantity = 0; // Store the total quantity globally
-
-document.getElementById("dropdown").addEventListener("change", function() {
-    console.log("dropdown changed.");
-    const selectedFish = this.value; // Get the selected fish type
-    if (selectedFish) {
-        // Get the total stock quantity for the selected fish
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", "/finaljsp/getTotalQuantity?fishName=" + encodeURIComponent(selectedFish), true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    totalQuantity = parseFloat(xhr.responseText); // Parse the returned total stock quantity
-                    if (!isNaN(totalQuantity)) {
-                        alert("Total Quantity of Stock is: " + totalQuantity);
-                    } else {
-                        alert("Error retrieving total quantity.");
-                    }
-                } else {
-                    alert("Failed to retrieve data. Status: " + xhr.status);
-                }
-            }
-        };
-        xhr.send();
-    } else {
-        alert("Please select a valid fish type.");
-    }
-});
-
-document.getElementById("num1").addEventListener("focusout", function() {
-    console.log("quantity input changed.");
-    const enteredQuantity = parseFloat(this.value); // Get the entered quantity
-
-    if (!isNaN(enteredQuantity) && enteredQuantity > 0) {
-        // Check if the entered quantity exceeds available stock
-        if (enteredQuantity > totalQuantity) {
-            alert("Entered quantity exceeds available stock. Available stock: " + totalQuantity);
-        } else {
-            console.log("Entered quantity is valid.");
-        }
-    } else {
-        alert("Please enter a valid quantity.");
-    }
-});
-
-
         </script>
+        <%@include file="homeFooter.jsp" %>
     </body>
 </html>

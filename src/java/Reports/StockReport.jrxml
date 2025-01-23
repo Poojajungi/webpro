@@ -1,29 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-
-<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-    <background>
-        <band/>
-    </background>
-    <title>
-        <band height="79"/>
-    </title>
-    <pageHeader>
-        <band height="35"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="61"/>
-    </columnHeader>
-    <detail>
-        <band height="125"/>
-    </detail>
-    <columnFooter>
-        <band height="45"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54"/>
-    </pageFooter>
-    <summary>
-        <band height="42"/>
-    </summary>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="01d5e5ef-5c5e-4459-b193-9ce4d453eeae">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select *from totalstock;]]>
+	</queryString>
+	<field name="tot_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="stock_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="stock_qty" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="stock_totamt" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="t1" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{stock_qty}]]></variableExpression>
+	</variable>
+	<variable name="t2" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{stock_totamt}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="79" backcolor="#D58CB1" uuid="5e673c3b-b660-4626-b260-04a1586c9e45"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="139" y="17" width="230" height="62" forecolor="#FFFFFF" uuid="ff4f5885-410e-422b-ba35-f643f5a858d0"/>
+				<textElement>
+					<font size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock Report]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="411" y="59" width="144" height="20" forecolor="#FFFFFF" uuid="30006613-d252-42e2-a4fc-c5cbd4fcad13"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="16" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="24" y="11" width="185" height="23" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="27736181-7381-47e6-8489-fe5656549a54"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[stock_name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="11" width="147" height="23" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="0f5ace3b-972b-4969-a0b4-cc6902d7f897"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[stock_qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="11" width="162" height="23" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="08c64b39-168c-4c30-bc4a-d51b73ad6f4b"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[stock_totamt]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="24" y="11" width="185" height="20" uuid="562f5e8e-c81c-4190-90f4-9166c87de5de"/>
+				<textElement textAlignment="Justified">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="11" width="147" height="20" uuid="5203d301-821a-41c7-9652-dd7d4270c8b4"/>
+				<textElement textAlignment="Justified">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="11" width="162" height="20" uuid="35852cde-b5bd-49d9-aa11-b14eb7d269d3"/>
+				<textElement textAlignment="Justified">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_totamt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="417" y="34" width="89" height="20" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="d93191a8-fdaf-472c-8a41-d38a5af51977"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="506" y="34" width="49" height="20" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="069e6982-e3cc-4536-ba2a-0c34605893fa"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="24" y="22" width="117" height="20" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="022b08d8-b7d7-48db-997e-2fd7b9696acf"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Items : "+$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="22" width="100" height="20" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="83905c9a-98b0-4b34-86f6-c52d078e06ec"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{t1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="369" y="22" width="100" height="20" forecolor="#D58CB1" backcolor="#FFFFFF" uuid="8c0ec5c6-1e00-4a9c-88dd-076cd4c757c1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{t2}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="24" y="21" width="100" height="1" uuid="744005a2-7d7d-43b8-a393-bab3e0642a3e"/>
+			</line>
+			<line>
+				<reportElement x="356" y="20" width="100" height="1" uuid="2b85041a-0dbc-4c2b-a027-cb70bfc1e631"/>
+			</line>
+			<line>
+				<reportElement x="209" y="19" width="100" height="1" uuid="bdcf6512-4175-47d9-a6d6-b178a9b228e2"/>
+			</line>
+		</band>
+	</summary>
 </jasperReport>

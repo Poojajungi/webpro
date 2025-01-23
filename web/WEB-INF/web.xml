@@ -4,9 +4,17 @@
         <servlet-name>TotalQuan</servlet-name>
         <servlet-class>model.TotalQuan</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>JasperReportServlet</servlet-name>
+        <servlet-class>model.JasperReportServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TotalQuan</servlet-name>
         <url-pattern>/getTotalQuantity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JasperReportServlet</servlet-name>
+        <url-pattern>/JasperReportServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -24,10 +24,14 @@
                 t.style.display = "t";
             }
 
+            
         </script>
 
     </head>
-    <body class="backdesign overflow-hidden vh-100">
+    <body class="backdesign  vh-100">
+        <div>
+            <%@include file="homeNav.jsp" %>
+        </div>
         <div class="container-fluid " >
             <form>
                 <h2 class="text-center mt-3 ">View Import Stock</h2>
@@ -41,7 +45,7 @@
                     </div>
                 </div>
 
-                <div style="overflow-y: auto;max-height: 500px;" class="mt-3">
+                <div style="overflow-y: auto;max-height: 400px;" class="mt-3">
                     <table class="table table-bordered  mt-3 table-sm table-striped border-dark table-hover" id="tbls" >
                         <tr class="text-center">
                             <th>Sr.no</th>
@@ -98,5 +102,6 @@
                 </div>
             </form> 
         </div>
+                        <%@include file="homeFooter.jsp" %>
     </body>
 </html>

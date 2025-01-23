@@ -23,9 +23,16 @@
             const b = parseFloat(document.getElementById("num2").value);
             document.getElementById("total").value = a * b;
             }
+
+            function fishChange(){
+            alert(document.getElementById("fishss").value);
+            }
         </script>
     </head>
-    <body class="backdesign vh-100 overflow-hidden">
+    <body class="backdesign vh-200">
+        <div>
+            <%@include file="homeNav.jsp" %>
+        </div>
         <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
             <form method="post">
                 <h2 class="text-center mt-3">Export Stock To Agency/Person</h2>
@@ -41,7 +48,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control" name="ExportpFish">
+                        <select class="form-control" name="ExportpFish" id="fishss" onchange="fishChange()">
                             <option value="one">--Select Fish Type--</option>
                             <%
                                 Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class);
@@ -51,6 +58,7 @@
                                 Query q1 = sess.createQuery("select distinct fish_name from FishImport");
                                 List<String> l1 = q1.list();
                                 for (String f : l1) {
+                                    System.out.print(f);
                             %>
                             <option value=<%=f%>><%= f%></option>
                             <%
@@ -90,6 +98,7 @@
             if (request.getParameter("ExportABtn") != null) {
                 String com = request.getParameter("ExportpName");
                 String fis = request.getParameter("ExportpFish");
+
                 String dat = request.getParameter("ExportpDate");
                 float qty = Float.parseFloat(request.getParameter("ExportpQty"));
                 float am = Float.parseFloat(request.getParameter("ExportpAmt"));
@@ -155,7 +164,93 @@
             </div>
         </div>
 
+        <div class="modal fade" id="totalQuantityModal" tabindex="-1" aria-labelledby="totalQuantityModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                        <img  src="CSS/Images/st1.png" height="70px" width="70px"/>
+                        <h1 id="modalQuantityContent" class="fw-semibold fs-5  text-center mt-2 mb-0">Fetching data...</h1>
+                        <h1 id="modalQuantityContent1" class="fw-semibold fs-5  text-center mt-1"></h1>
+                        <div class=" d-flex justify-content-center">
+                            <button type="button" class="btn btn-success mt-3" data-bs-dismiss="modal">Okay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
+            let totalQuantity = 0; // Store the total quantity globally
+
+            document.getElementById("dropdown").addEventListener("change", function() {
+            console.log("dropdown changed.");
+            const selectedFish = this.value; // Get the selected fish type
+            if (selectedFish) {
+            // Get the total stock quantity for the selected fish
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "/finaljsp/getTotalQuantity?fishName=" + encodeURIComponent(selectedFish), true);
+            xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+            totalQuantity = parseFloat(xhr.responseText); // Parse the returned total stock quantity
+            if (!isNaN(totalQuantity)) {
+//            alert("Total Quantity of Stock is: " + totalQuantity);
+            document.getElementById("modalQuantityContent").textContent =
+                    "Total Quantity of Stock is: " + totalQuantity;
+            document.getElementById("modalQuantityContent").style.color = "green";
+            // Show the modal
+            const quantityModal = new bootstrap.Modal(document.getElementById("totalQuantityModal"));
+            quantityModal.show();
+            } else {
+            alert("Error retrieving total quantity.");
+            }
+            } else {
+            alert("Failed to retrieve data. Status: " + xhr.status);
+            }
+            }
+            };
+            xhr.send();
+            } else {
+            alert("Please select a valid fish type.");
+            }
+            });
+            document.getElementById("num1").addEventListener("focusout", function() {
+            console.log("quantity input changed.");
+            const enteredQuantity = parseFloat(this.value); // Get the entered quantity
+
+            if (!isNaN(enteredQuantity) && enteredQuantity > 0) {
+            // Check if the entered quantity exceeds available stock
+            if (enteredQuantity > totalQuantity) {
+//            alert("Entered quantity exceeds available stock. Available stock: " + totalQuantity);
+            document.getElementById("modalQuantityContent").innerHTML =
+                    "Entered quantity exceeds available stock.";
+            document.getElementById("modalQuantityContent").style.color = "red";
+            document.getElementById("modalQuantityContent1").innerHTML = "Available stock: " + totalQuantity;
+            document.getElementById("modalQuantityContent1").style.color = "green";
+            // Show the modal
+            const quantityModal = new bootstrap.Modal(document.getElementById("totalQuantityModal"));
+            quantityModal.show();
+            document.getElementById("num2").disabled = true;
+            document.getElementById("Exp1").disabled = true;
+            document.getElementById("Exp1").style.cursor = "not-allowed";
+            setTimeout(function() {
+            const inputField = document.getElementById("num1");
+            inputField.focus(); // Focus the input field
+            }, 5000);
+//                        document.getElementById("total").style.disabled = true;
+            } else {
+            console.log("Entered quantity is valid.");
+            document.getElementById("num2").disabled = false;
+            document.getElementById("Exp1").disabled = false;
+            document.getElementById("Exp1").style.cursor = "pointer";
+            }
+            } else {
+            document.getElementById("modalQuantityContent").innerHTML = "Please Enter the Valid Quantity !";
+            document.getElementById("modalQuantityContent").style.color = "red";
+            const quantityModal = new bootstrap.Modal(document.getElementById("totalQuantityModal"));
+            quantityModal.show();
+            }
+            });
             <% if (message != null) { %>
             document.addEventListener("DOMContentLoaded", function () {
             const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
@@ -164,9 +259,11 @@
             document.getElementById("okButton").addEventListener("click", function () {
             // Remove query parameters from the URL
             const baseUrl = window.location.origin + window.location.pathname;
-            window.location.replace(baseUrl); // Replaces current URL and refreshes
+//            window.location.replace(baseUrl); // Replaces current URL and refreshes
+            request.setAttribute("message", null);
             });
             <% }%>
         </script>
+        <%@include file="homeFooter.jsp" %>
     </body>
 </html>

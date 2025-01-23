@@ -29,17 +29,28 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="CSS/stock.css"/>
         <title>JSP Page</title>
-        <script type="text/javascript">
+        <script type="text/javascript" >
 
             function calculateTotal(){
             const a = document.getElementById("num1").value;
             const b = document.getElementById("num2").value;
             document.getElementById("total").value = a * b;
             }
+            
+             function enableImportButton() {
+        document.getElementById("btn2").disabled = false;  // Enable the 'Import' button
+    }
 
             function ShowBtn() {
             document.getElementById("btn2").disabled = false;
             }
+            
+             // Function to prevent form reload and only update the "Add" action
+    function handleAddButton(event) {
+        event.preventDefault();  // Prevent form submission
+        enableImportButton();    // Enable the 'Import' button
+        // Optionally, handle form data here before submitting or adding
+    }
 
             function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -54,6 +65,24 @@
             dropdown.value = selectedValue; // Set the value in the dropdown
             }
             });
+
+            document.addEventListener("DOMContentLoaded", function () {
+    // Check if the "Add" button was clicked before the page reload
+    if (sessionStorage.getItem("addClicked") === "true") {
+        document.getElementById("btn2").disabled = false; // Enable 'Import' button
+    }
+
+    // Attach event listener to the "Add" button
+    document.getElementById("addBtn").addEventListener("click", function () {
+        sessionStorage.setItem("addClicked", "true"); // Mark 'Add' as clicked
+    });
+
+    // Optional: Clear sessionStorage after form is reset
+    document.getElementById("formId").addEventListener("reset", function () {
+        sessionStorage.removeItem("addClicked");
+    });
+});
+
         </script>
     </head>
     <%
@@ -62,9 +91,12 @@
         String d = request.getParameter("ImportDate");
         int ids = cr.getIds() + 1;
     %>
-    <body class="backdesign vh-100 overflow-hidden">
-        <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
-            <form method="post">
+    <body class="backdesign vh-200 ">
+         <div>
+            <%@include file="homeNav.jsp" %>
+        </div>
+        <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;margin-bottom: 150px;">
+            <form method="post" id="formId">
                 <h2 class="text-center mt-3">Import Stock</h2>
                 <div class="row mt-4 mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
@@ -75,26 +107,7 @@
                             <option value="two" <%= "two".equals(selectedValue) ? "selected" : ""%>>Two</option>
                             <option value="three" <%= "three".equals(selectedValue) ? "selected" : ""%>>Three</option>
                         </select>
-                        <!--                        <script>
-                                                    function initializeDropdownPersistence() {
-                                                    const dropdown = document.getElementById("boatNames");
-                                                    // Restore the selected value from localStorage
-                                                    const savedValue = localStorage.getItem("selectedOption");
-                                                    if (savedValue) {
-                                                    dropdown.value = savedValue;
-                                                    }
-                        
-                                                    // Save the selected value to localStorage whenever it changes
-                                                    dropdown.addEventListener("change", () = > {
-                                                    localStorage.setItem("selectedOption", dropdown.value);
-                                                    });
-                                                    }
-                        
-                                                    // Call the function when DOM is loaded
-                                                    document.addEventListener("DOMContentLoaded", () = > {
-                                                    initializeDropdownPersistence();
-                                                    });
-                                                </script>-->
+                     
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <input type="date" name="ImportDate"  class="form-control" value="<%= d != null ? d : ""%>" />
@@ -103,7 +116,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control" name="fish" id="fishname" >
+                        <select class="form-control" name="fish" id="fishTypeDropdown">
                             <option value="" disabled selected>--Select Fish Type--</option>
                             <%
                                 Configuration con = new Configuration().configure().addAnnotatedClass(fishnames.class);
@@ -114,7 +127,7 @@
                                 List<fishnames> l1 = q1.list();
                                 for (fishnames obj : l1) {
                             %>
-                            <option value="<%= obj.getEng_name()%>"><%= obj.getEng_name()%></option>
+                            <option value="<%= obj.getEng_name()%>" ><%= obj.getEng_name()%></option>
                             <%
                                 }
                                 sess.getTransaction().commit();
@@ -149,8 +162,8 @@
 
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-6 text-center">
-                        <button type="submit" class="btn btn-light fw-bold"  name="Addbtn" onclick="ShowBtn()">Add</button>
-                        <input type="submit" name="ImportBtn" value="Import" id="btn2" class="btn btn-primary fw-bold"   />
+                        <button type="submit" class="btn btn-light fw-bold"  name="Addbtn" id="addBtn">Add</button>
+                        <input type="submit" name="ImportBtn" value="Import" id="btn2" class="btn btn-primary fw-bold"  disabled />
                     </div>
                 </div>
 
@@ -239,6 +252,6 @@
 
         </script>
         <% }%>
-
     </body>
 </html>
+        <%@include file="homeFooter.jsp" %>
