@@ -1,5 +1,7 @@
 
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,15 +16,8 @@
     <body>
         <footer class="bg-transparent overflow-hidden mt-2">
             <div class=" bg-white  text-md-left">
-                <div class="row">
 
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1722.624330653458!2d69.59603465243441!3d21.642154734431763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3956343635a3afa7%3A0x1e555cc04c4b6067!2sRaandal%20Mataji%20Nu%20Mandir%20Kharva%20Vad!5e0!3m2!1sen!2sin!4v1734491993965!5m2!1sen!2sin" 
-                            width="600" height="450" style="border:0;" allowfullscreen="" 
-                            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                </div>
-
-                <div class=" container  justify-content-around border shadow mt-2 mx-auto row text-md-left">
+                <div class="container-fluid justify-content-around border shadow mt-2 mx-auto row text-md-left">
                     <div class="col-md-3   mx-auto mt-3 d-flex gap-2">
                         <div>
                             <p>
@@ -31,6 +26,7 @@
                         </div>
                         <div>
                             <h5 class="text-uppercase mb-2 font-weight-bold text-primary">Porbandar</h5>
+                            <hr class="mt-0" style="border:1px solid blue;opacity: 0.5;" />
                             <p>Fish Market , Kharvavad <br> Porbandar-360575</p>
                         </div>
                     </div>
@@ -43,6 +39,7 @@
                         </div>
                         <div>
                             <h5 class="text-uppercase mb-2 font-weight-bold text-primary">Email</h5>
+                            <hr class="mt-0" style="border:1px solid blue;opacity: 0.5;" />
                             <p>FishTransportation@gmail.com</p>
                         </div>
                     </div>
@@ -55,15 +52,16 @@
                         </div>
                         <div>
                             <h5 class="text-uppercase text-primary mb-2 font-weight-bold">Call</h5>
+                            <hr class="mt-0" style="border:1px solid blue;opacity: 0.5;" />
                             <p>+91 1234567891</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-secondary pb-2">
-                    <hr class="">
+                <div class="bg-secondary pb-2 pt-2">
+                    <!--<hr class="mt-0 mb-0">-->
 
                     <div class=" container mx-auto my-2 row bg-white align-items-center ">
-                        <p class=" fw-bold fs-5 text-center" style="color: grey;">Important Links</p>
+                        <p class=" fw-bold text-center" style="color: grey;font-size: 25px;">Important Links</p>
                         <div class="fs-5 text-primary">
                             <marquee>
                                 <a href="#" style=" text-decoration:none;margin-right: 30px;">Boat/Owner</a>

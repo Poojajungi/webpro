@@ -45,9 +45,9 @@
                                 </button>
                             </div>
                         </div>
-                        <div style="overflow-y: auto;max-height: 400px;margin-bottom: 50px;" class="mt-3">
+                        <div style="overflow-y: auto;max-height: 400px;margin-bottom: 150px;" class="mt-3">
                             <table class="table table-bordered table-striped table-hover mt-3 table-sm border-dark" id="tbls">
-                                <tr class="text-center">
+                                <tr class="text-center table-dark text-white">
                                     <th>Sr.no</th>
                                     <th class="col-3">Fish Name</th>
                                     <th>Quantity</th>
@@ -110,9 +110,9 @@
                                 </button>
                             </div>
                         </div>
-                        <div style="overflow-y: auto;max-height: 400px;" class="mt-3">
+                        <div style="overflow-y: auto;max-height: 400px;margin-bottom: 150px;" class="mt-3">
                             <table class="table table-bordered mt-3 table-sm border-dark table-striped table-hover" id="tbl2" >
-                                <tr class="text-center">
+                                <tr class="text-center table-dark text-white">
                                     <th>Sr.no</th>
                                     <th>Fish Name</th>
                                     <th>Quantity</th>
@@ -165,6 +165,6 @@
             </form> 
         </div>
         </div>
-                                <%@include file="homeFooter.jsp" %>
+                                <%@include file="homeTemp.jsp" %>
     </body>
 </html>

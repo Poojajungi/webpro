@@ -33,7 +33,7 @@
         <div>
             <%@include file="homeNav.jsp" %>
         </div>
-        <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;">
+        <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;margin-bottom: 190px;">
             <form method="post">
                 <h2 class="text-center mt-3">Export Stock To Agency/Person</h2>
                 <div class="row mt-4 mb-3">
@@ -264,6 +264,6 @@
             });
             <% }%>
         </script>
-        <%@include file="homeFooter.jsp" %>
+        <%@include file="homeTemp.jsp" %>
     </body>
 </html>

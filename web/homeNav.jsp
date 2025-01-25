@@ -40,13 +40,46 @@
                     layout: google.translate.TranslateElement.InlineLayout.SIMPLE
                 },"myid");
             }
+            
+      // Wait for the Google Translate widget to initialize
+    function onGoogleTranslateReady() {
+        const interval = setInterval(() => {
+            const langCombo = document.querySelector(".goog-te-combo"); // The Google Translate language dropdown
+            if (langCombo) {
+                clearInterval(interval); // Stop checking once the dropdown is found
+
+                // Add event listener to save the selected language
+                langCombo.addEventListener("change", function () {
+                    const selectedLanguage = langCombo.value; // Get the selected language
+                    localStorage.setItem("selectedLanguage", selectedLanguage); // Save it to localStorage
+                    console.log("Language saved:", selectedLanguage);
+                });
+
+                // Apply saved language if it exists
+                const savedLanguage = localStorage.getItem("selectedLanguage");
+                if (savedLanguage) {
+                    langCombo.value = savedLanguage; // Set the dropdown value
+                    langCombo.dispatchEvent(new Event("change")); // Trigger the change event
+                    console.log("Language reapplied:", savedLanguage);
+                }
+            }
+        }, 100); // Check every 100ms
+    }
+
+    // Load Google Translate widget and set up language persistence
+    window.addEventListener("load", function () {
+        loadGoogleTranslate();
+        onGoogleTranslateReady();
+    });
+
+            
     </script>
 
     </head>
     <body>
         <nav class="navbar navbar-expand-lg bg-transparent fs-5">
             <div class="container-fluid">
-                <a class="navbar-brand fw-semibold" href="home.jsp">Fish Transportation</a>
+                <a class="navbar-brand fw-semibold" href="home.jsp" id="myAnchor">Fish Transportation</a>
                 <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -90,7 +123,7 @@
                                                                                             </li>-->
                                 <li><a class="dropdown-item" href="ViewExport.jsp">Export Stock</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Stock Report</a></li>
+                                <li><a class="dropdown-item" href="reportStock.jsp">Stock Report</a></li>
                             </ul>
                         </li>
 

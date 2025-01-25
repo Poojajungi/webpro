@@ -29,28 +29,61 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="CSS/stock.css"/>
         <title>JSP Page</title>
-        <script type="text/javascript" >
+<script type="text/javascript" >
+    
+window.addEventListener("load", function () {
+    // Select the anchor tag you want to monitor
+    const anchorTag = document.querySelector("a#myAnchor"); // Replace #myAnchor with your anchor's selector
+
+    if (anchorTag) {
+        // Create a MutationObserver to monitor changes in the text content of the anchor tag
+        const observer = new MutationObserver(function (mutationsList) {
+            for (const mutation of mutationsList) {
+                if (mutation.type === "characterData" || mutation.type === "childList") {
+                    console.log("Anchor text changed to:", anchorTag.textContent);
+                   if (anchorTag.textContent.trim() === "Fish Transportation") {
+                    document.getElementById("fishTypeDropdown").style.display = "block";
+                    document.getElementById("fishTypeDropdown2").style.display = "none";
+                } else {
+                    console.log("English");
+                    document.getElementById("fishTypeDropdown").style.display = "none";
+                    document.getElementById("fishTypeDropdown2").style.display = "block";
+                }
+                }
+            }
+        });
+
+        // Configure the observer to watch for text content changes
+        observer.observe(anchorTag, { childList: true, characterData: true, subtree: true });
+
+        console.log("Monitoring text changes on:", anchorTag);
+    } else {
+        console.log("Anchor tag not found. Make sure the selector is correct.");
+    }
+});
+
+
 
             function calculateTotal(){
             const a = document.getElementById("num1").value;
             const b = document.getElementById("num2").value;
             document.getElementById("total").value = a * b;
             }
-            
-             function enableImportButton() {
-        document.getElementById("btn2").disabled = false;  // Enable the 'Import' button
-    }
+
+            function enableImportButton() {
+            document.getElementById("btn2").disabled = false; // Enable the 'Import' button
+            }
 
             function ShowBtn() {
             document.getElementById("btn2").disabled = false;
             }
-            
-             // Function to prevent form reload and only update the "Add" action
-    function handleAddButton(event) {
-        event.preventDefault();  // Prevent form submission
-        enableImportButton();    // Enable the 'Import' button
-        // Optionally, handle form data here before submitting or adding
-    }
+
+            // Function to prevent form reload and only update the "Add" action
+            function handleAddButton(event) {
+            event.preventDefault(); // Prevent form submission
+            enableImportButton(); // Enable the 'Import' button
+            // Optionally, handle form data here before submitting or adding
+            }
 
             function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -65,24 +98,21 @@
             dropdown.value = selectedValue; // Set the value in the dropdown
             }
             });
-
             document.addEventListener("DOMContentLoaded", function () {
-    // Check if the "Add" button was clicked before the page reload
-    if (sessionStorage.getItem("addClicked") === "true") {
-        document.getElementById("btn2").disabled = false; // Enable 'Import' button
-    }
+            // Check if the "Add" button was clicked before the page reload
+            if (sessionStorage.getItem("addClicked") === "true") {
+            document.getElementById("btn2").disabled = false; // Enable 'Import' button
+            }
 
-    // Attach event listener to the "Add" button
-    document.getElementById("addBtn").addEventListener("click", function () {
-        sessionStorage.setItem("addClicked", "true"); // Mark 'Add' as clicked
-    });
-
-    // Optional: Clear sessionStorage after form is reset
-    document.getElementById("formId").addEventListener("reset", function () {
-        sessionStorage.removeItem("addClicked");
-    });
-});
-
+            // Attach event listener to the "Add" button
+            document.getElementById("addBtn").addEventListener("click", function () {
+            sessionStorage.setItem("addClicked", "true"); // Mark 'Add' as clicked
+            });
+            // Optional: Clear sessionStorage after form is reset
+            document.getElementById("formId").addEventListener("reset", function () {
+            sessionStorage.removeItem("addClicked");
+            });
+            });
         </script>
     </head>
     <%
@@ -92,10 +122,10 @@
         int ids = cr.getIds() + 1;
     %>
     <body class="backdesign vh-200 ">
-         <div>
+        <div>
             <%@include file="homeNav.jsp" %>
         </div>
-        <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;margin-bottom: 150px;">
+        <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;margin-bottom: 190px;">
             <form method="post" id="formId">
                 <h2 class="text-center mt-3">Import Stock</h2>
                 <div class="row mt-4 mb-3">
@@ -107,7 +137,7 @@
                             <option value="two" <%= "two".equals(selectedValue) ? "selected" : ""%>>Two</option>
                             <option value="three" <%= "three".equals(selectedValue) ? "selected" : ""%>>Three</option>
                         </select>
-                     
+
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <input type="date" name="ImportDate"  class="form-control" value="<%= d != null ? d : ""%>" />
@@ -116,7 +146,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control" name="fish" id="fishTypeDropdown">
+                        <select class="form-control" name="fish" id="fishTypeDropdown" >
                             <option value="" disabled selected>--Select Fish Type--</option>
                             <%
                                 Configuration con = new Configuration().configure().addAnnotatedClass(fishnames.class);
@@ -128,6 +158,21 @@
                                 for (fishnames obj : l1) {
                             %>
                             <option value="<%= obj.getEng_name()%>" ><%= obj.getEng_name()%></option>
+                            <%
+                                }
+                            %>
+                        </select>
+
+                        <!--<select class="form-control" name="fish" id="fishTypeDropdown2"  style="display: block;">--> 
+                                                    <select class="form-control" name="fish" id="fishTypeDropdown2"  style="display: none;"> 
+
+                            <option value="" disabled selected>--Select Fish Type--</option>
+                            <%
+                                q1 = sess.createQuery("from fishnames");
+                                List<fishnames> l2 = q1.list();
+                                for (fishnames obj : l1) {
+                            %>
+                            <option value="<%= obj.getGuj_name()%>" ><%= obj.getGuj_name()%></option>
                             <%
                                 }
                                 sess.getTransaction().commit();
@@ -159,15 +204,12 @@
                     <div class="col-md-6 col-lg-6 col-sm-12 formmain">
                         <input type="number" name="idd" placeholder=" " id="total" class="form-control textbox" value="<%= ids != 0 ? ids : ""%>"  readonly/>
                         <label  class="form-labeline">Reference Id</label>
-
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-6 text-center">
                         <button type="submit" class="btn btn-light fw-bold"  name="Addbtn" id="addBtn">Add</button>
                         <input type="submit" name="ImportBtn" value="Import" id="btn2" class="btn btn-primary fw-bold"  disabled />
                     </div>
                 </div>
-
-
             </form>
         </div>
 
@@ -254,4 +296,4 @@
         <% }%>
     </body>
 </html>
-        <%@include file="homeFooter.jsp" %>
+<%@include file="homeTemp.jsp" %>

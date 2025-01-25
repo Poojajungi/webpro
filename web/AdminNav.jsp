@@ -10,25 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
-        <style>
-            /* Ensure the nested dropdowns align correctly */
-            /*            .dropdown-menu .dropdown-menu {
-                             margin-left: 100%; 
-                            top: 0;
-                            left: 100%;
-                            margin-top: -5px;
-                        }
-            
-                         Hide submenu by default 
-                        .submenu .dropdown-menu {
-                            display: none;
-                        }
-            
-                         Optional: Add transition for smooth effect 
-                        .submenu .dropdown-menu {
-                            transition: opacity 0.2s;
-                        }*/
-        </style>
+
         <script type="text/javascript">
             function loadGoogleTranslate()
             {

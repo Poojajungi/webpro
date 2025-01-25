@@ -45,9 +45,9 @@
                     </div>
                 </div>
 
-                <div style="overflow-y: auto;max-height: 400px;" class="mt-3">
+                <div style="overflow-y: auto;max-height: 400px;margin-bottom: 140px;" class="mt-3">
                     <table class="table table-bordered  mt-3 table-sm table-striped border-dark table-hover" id="tbls" >
-                        <tr class="text-center">
+                        <tr class="text-center table-dark text-white">
                             <th>Sr.no</th>
                             <th>Fish Name</th>
                             <th>Quantity</th>
@@ -102,6 +102,6 @@
                 </div>
             </form> 
         </div>
-                        <%@include file="homeFooter.jsp" %>
+                        <%@include file="homeTemp.jsp" %>
     </body>
 </html>
