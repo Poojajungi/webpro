@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="CSS/stock.css"/>
         <title>JSP Page</title>
 <script type="text/javascript" >
+
     
 window.addEventListener("load", function () {
     // Select the anchor tag you want to monitor
@@ -185,6 +186,7 @@ window.addEventListener("load", function () {
                     <div class="col-md-6 col-lg-6 col-sm-12 formmain">
                         <input type="number" name="ImportQty" placeholder=" " id="num1"  class="form-control textbox" oninput="calculateTotal()" />
                         <label  class="form-labeline">Enter Quantity(KG)</label>
+                        <input type="hidden" name="sessHidden" value="<%= session.getAttribute("logname") %>"/>
                     </div>
 
                 </div>
@@ -219,7 +221,9 @@ window.addEventListener("load", function () {
                 int id = Integer.parseInt(request.getParameter("idd"));
                 String boat = request.getParameter("boat/owner");
                 String dat = request.getParameter("ImportDate");
-                if (cr.ImportAdd(id, boat, dat, fish, qty, amt, tamt) > 0) {
+                int uid = Integer.parseInt(request.getParameter("sessHidden"));
+                
+                if (cr.ImportAdd(id, boat, dat, fish, qty, amt, tamt,uid) > 0) {
                     message = "Fish Imported Successfully.";
                     alertType = "success";
                 } else {
@@ -276,24 +280,33 @@ window.addEventListener("load", function () {
         </div>
 
         <% if (message != null) { %>
-        <script>
-
-            document.addEventListener("DOMContentLoaded", function () {
-            // Check if the modal has already been shown
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Show modal only if not previously shown
             if (!sessionStorage.getItem("modalShown")) {
-            const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
-            alertModal.show();
-            sessionStorage.setItem("modalShown", "true"); // Mark modal as shown
+                const alertModalElement = document.getElementById("alertModal");
+                if (alertModalElement) {
+                    const alertModal = new bootstrap.Modal(alertModalElement);
+                    alertModal.show();
+                    sessionStorage.setItem("modalShown", "true");
+                }
             }
-            });
-            document.getElementById("okButton").addEventListener("click", function () {
-            const baseUrl = window.location.origin + window.location.pathname;
-            window.location.replace(baseUrl); // Replaces current URL and refreshes
-            });
 
-
-        </script>
-        <% }%>
+            // Attach click event only if the button is present
+            const okButton = document.getElementById("okButton");
+            if (okButton) {
+                okButton.addEventListener("click", function () {
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    window.location.replace(baseUrl); // Replaces current URL and refreshes
+                    const btn2 = document.getElementById("btn2");
+                    if (btn2) {
+                        btn2.disabled = true;
+                    }
+                });
+            }
+        });
+    </script>
+<% } %>
     </body>
 </html>
 <%@include file="homeTemp.jsp" %>

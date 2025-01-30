@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="CSS/stock.css"/>
 
     </head>
-    <body class="backdesign vh-200 ">
+    <body class="backdesign vh-100 ">
         <div>
             <%@include file="homeNav.jsp" %>
         </div>
@@ -61,7 +61,7 @@
                                     SessionFactory sf = configs.buildSessionFactory();
                                     Session sess = sf.openSession();
                                     sess.beginTransaction();
-                                    Query q1 = sess.createQuery("from ExportCompany ");
+                                    Query q1 = sess.createQuery("from ExportCompany where UserID="+session.getAttribute("logname"));
                                     List<ExportCompany> l = q1.list();
                                     for (ExportCompany row : l) {
                                 %>
@@ -77,7 +77,7 @@
                                 <%
                                     }
 
-                                    q1 = sess.createQuery("select sum(Exp_qty),sum(Exp_amt),sum(Exp_totamt) from ExportCompany");
+                                    q1 = sess.createQuery("select sum(Exp_qty),sum(Exp_amt),sum(Exp_totamt) from ExportCompany where UserID="+session.getAttribute("logname"));
                                     List<Object[]> l2 = q1.list();
                                     for (Object[] row : l2) {
                                 %>
@@ -125,7 +125,8 @@
                                     sf = configs.buildSessionFactory();
                                     sess = sf.openSession();
                                     sess.beginTransaction();
-                                    q1 = sess.createQuery("from ExportAgency ");
+                                    q1 = sess.createQuery("from ExportAgency where UserID = :userId");
+                                    q1.setParameter("userId", session.getAttribute("logname"));
                                     List<ExportAgency> l4 = q1.list();
                                     for (ExportAgency row : l4) {
                                 %>
@@ -141,7 +142,7 @@
                                 <%
                                     }
 
-                                    q1 = sess.createQuery("select sum(ExpA_qty),sum(ExpA_amt),sum(ExpA_totamt) from ExportAgency");
+                                    q1 = sess.createQuery("select sum(ExpA_qty),sum(ExpA_amt),sum(ExpA_totamt) from ExportAgency where UserID="+session.getAttribute("logname"));
                                     List<Object[]> l3 = q1.list();
                                     for (Object[] row : l3) {
                                 %>

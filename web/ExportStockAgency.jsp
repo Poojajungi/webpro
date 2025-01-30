@@ -25,7 +25,7 @@
             }
 
             function fishChange(){
-            alert(document.getElementById("fishss").value);
+//            alert(document.getElementById("fishss").value);
             }
         </script>
     </head>
@@ -72,6 +72,7 @@
                     <div class="col-md-6 col-lg-6 col-sm-12 formmain">
                         <input type="number" name="ExportpQty" placeholder=" " id="num1" class="form-control textbox" oninput="calculateTotal()"/>
                         <label  class="form-labeline">Enter Quantity(KG)</label>
+                        <input type="hidden" name="sessHidden" value="<%= session.getAttribute("logname") %>"/>
                     </div>
 
                 </div>
@@ -95,6 +96,9 @@
             </form>
         </div>
         <%
+//            if (request.getParameter("sessHidden")==null) {
+//                    response.sendRedirect("Loginnjsp.jsp");
+//                }
             if (request.getParameter("ExportABtn") != null) {
                 String com = request.getParameter("ExportpName");
                 String fis = request.getParameter("ExportpFish");
@@ -103,10 +107,11 @@
                 float qty = Float.parseFloat(request.getParameter("ExportpQty"));
                 float am = Float.parseFloat(request.getParameter("ExportpAmt"));
                 float tam = Float.parseFloat(request.getParameter("ExportptAmt"));
+                int uid = Integer.parseInt(request.getParameter("sessHidden"));
 
                 crud cr = new crud();
                 if (cr.TotalQuantity(fis) > 0.0) {
-                    if (cr.ExportAgencyAdd(com, dat, fis, qty, am, tam) > 0) {
+                    if (cr.ExportAgencyAdd(com, dat, fis, qty, am, tam,uid) > 0) {
                         if (cr.ExportMinus(fis, qty) > 0) {
                             message = "Export Successfully done.";
                             alertType = "success";

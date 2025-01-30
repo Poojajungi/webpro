@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,7 +22,7 @@ public class crud {
         return (Integer) q1.uniqueResult();
     }
 
-    public int ImportAdd(int id, String nm, String date, List fishName, List qty, List amt, List tamt) {
+    public int ImportAdd(int id, String nm, String date, List fishName, List qty, List amt, List tamt,int Userid) {
         Configuration config = new Configuration().configure().addAnnotatedClass(ImportStock.class).addAnnotatedClass(FishImport.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
@@ -33,14 +34,11 @@ public class crud {
             ims.setIm_ID(id);
             ims.setIm_name(nm);
             ims.setIm_date(date);
-
+            ims.setUserID(Userid);
             session.save(ims);
             int d = ims.getIm_ID();
             FishImport f = new FishImport();
             for (int i = 0; i < fishName.size(); i++) {
-//                String names = fishName.get(i).toString();
-//                float a = Float.parseFloat(qty.get(i).toString());
-//                float b = Float.parseFloat(tamt.get(i).toString());
                 f.setFish_name(fishName.get(i).toString());
                 System.out.println(f.getFish_name());
                 f.setFish_qty(Float.parseFloat(qty.get(i).toString()));
@@ -65,7 +63,7 @@ public class crud {
         }
     }
 
-    public int ExportCompanyAdd(String nm, String date, String fishName, float qty, float amt, float tamt) {
+    public int ExportCompanyAdd(String nm, String date, String fishName, float qty, float amt, float tamt,int userID) {
         Configuration config = new Configuration().configure().addAnnotatedClass(ExportCompany.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
@@ -78,6 +76,7 @@ public class crud {
             exp.setExp_qty(qty);
             exp.setExp_amt(amt);
             exp.setExp_totamt(tamt);
+            exp.setUserID(userID);
             session.save(exp);
             session.getTransaction().commit();
             session.close();
@@ -91,7 +90,7 @@ public class crud {
         }
     }
 
-    public int ExportAgencyAdd(String nm, String date, String fishName, float qty, float amt, float tamt) {
+    public int ExportAgencyAdd(String nm, String date, String fishName, float qty, float amt, float tamt,int userID) {
         Configuration config = new Configuration().configure().addAnnotatedClass(ExportAgency.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
@@ -104,6 +103,7 @@ public class crud {
             expAgency.setExpA_qty(qty);
             expAgency.setExpA_amt(amt);
             expAgency.setExpA_totamt(tamt);
+            expAgency.setUserID(userID);
             session.save(expAgency);
             session.getTransaction().commit();
             session.close();
@@ -118,13 +118,13 @@ public class crud {
     }
 
     public int TotalstocksMethod() {
-        Configuration config = new Configuration().configure().addAnnotatedClass(TotalStock.class).addAnnotatedClass(FishImport.class);
+        Configuration config = new Configuration().configure().addAnnotatedClass(TotalStock.class).addAnnotatedClass(FishImport.class).addAnnotatedClass(ImportStock.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            int r = session.createQuery("insert into TotalStock(stock_name,stock_qty,stock_totamt)"
-                    + "SELECT DISTINCT fish_name,sum(fish_qty),SUM(fish_totamt) FROM FishImport GROUP by fish_name").executeUpdate();
+            int r = session.createQuery("insert into TotalStock(stock_name,stock_qty,stock_totamt,UserID)"
+                    + "SELECT DISTINCT f.fish_name,sum(f.fish_qty),SUM(f.fish_totamt),i.UserID FROM FishImport f,ImportStock i where f.Im_Id = i.Im_ID GROUP by fish_name").executeUpdate();
             session.getTransaction().commit();
             session.close();
             sf.close();

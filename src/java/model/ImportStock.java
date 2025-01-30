@@ -18,6 +18,7 @@ public class ImportStock {
         private int Im_ID;
         private String Im_name;
         private String Im_date;
+        private int UserID;
 
     public int getIm_ID() {
         return Im_ID;
@@ -43,21 +44,20 @@ public class ImportStock {
         this.Im_date = Im_date;
     }
 
-//    public List<FishImport> getFishimport() {
-//        return fishimport;
-//    }
-//
-//    public void setFishimport(List<FishImport> fishimport) {
-//        this.fishimport = fishimport;
-//    }
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int UserID) {
+        this.UserID = UserID;
+    }
 
     @Override
     public String toString() {
-        return "ImportStock{" + "Im_ID=" + Im_ID + ", Im_name=" + Im_name + ", Im_date=" + Im_date  + '}';
+        return "ImportStock{" + "Im_ID=" + Im_ID + ", Im_name=" + Im_name + ", Im_date=" + Im_date + ", UserID=" + UserID + '}';
     }
 
  
-
     
         
         

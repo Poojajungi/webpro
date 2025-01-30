@@ -17,6 +17,7 @@ public class ExportAgency {
     private float ExpA_qty;
     private float ExpA_amt;
     private float ExpA_totamt;
+   private int UserID;
 
     public int getExpA_Id() {
         return ExpA_Id;
@@ -74,11 +75,17 @@ public class ExportAgency {
         this.ExpA_totamt = ExpA_totamt;
     }
 
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int UserID) {
+        this.UserID = UserID;
+    }
+
     @Override
     public String toString() {
-        return "ExportAgency{" + "ExpA_Id=" + ExpA_Id + ", ExpA_name=" + ExpA_name + ", ExpA_date=" + ExpA_date + ", ExpA_fishtype=" + ExpA_fishtype + ", ExpA_qty=" + ExpA_qty + ", ExpA_amt=" + ExpA_amt + ", ExpA_totamt=" + ExpA_totamt + '}';
+        return "ExportAgency{" + "ExpA_Id=" + ExpA_Id + ", ExpA_name=" + ExpA_name + ", ExpA_date=" + ExpA_date + ", ExpA_fishtype=" + ExpA_fishtype + ", ExpA_qty=" + ExpA_qty + ", ExpA_amt=" + ExpA_amt + ", ExpA_totamt=" + ExpA_totamt + ", UserID=" + UserID + '}';
     }
-    
-    
 
 }

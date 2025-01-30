@@ -11,6 +11,7 @@ public class TotalStock {
         private String stock_name;
         private double stock_qty;
         private double stock_totamt;
+        private int UserID;
 
     public int getTot_id() {
         return tot_id;
@@ -44,10 +45,19 @@ public class TotalStock {
         this.stock_totamt = stock_totamt;
     }
 
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int UserID) {
+        this.UserID = UserID;
+    }
+
     @Override
     public String toString() {
-        return "TotalStock{" + "tot_id=" + tot_id + ", stock_name=" + stock_name + ", stock_qty=" + stock_qty + ", stock_totamt=" + stock_totamt + '}';
+        return "TotalStock{" + "tot_id=" + tot_id + ", stock_name=" + stock_name + ", stock_qty=" + stock_qty + ", stock_totamt=" + stock_totamt + ", UserID=" + UserID + '}';
     }
-        
+    
+ 
         
 }

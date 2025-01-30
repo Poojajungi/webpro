@@ -58,7 +58,7 @@
                             SessionFactory sf = conn.buildSessionFactory();
                             Session sess = sf.openSession();
                             sess.beginTransaction();
-                            Query q1 = sess.createQuery("from TotalStock");
+                            Query q1 = sess.createQuery("from TotalStock where UserID="+session.getAttribute("logname"));
                             List<TotalStock> l1 = q1.list();
                             for (TotalStock t : l1) {
                                 n++;
@@ -71,7 +71,7 @@
 
                     <%
                         }
-                        q1 = sess.createQuery("select sum(stock_qty),sum(stock_totamt) from TotalStock");
+                        q1 = sess.createQuery("select sum(stock_qty),sum(stock_totamt) from TotalStock where UserID="+session.getAttribute("logname"));
                         List<Object[]> l2 = q1.list();
                         for (Object[] row : l2) {
                     %>

@@ -61,7 +61,7 @@
                             SessionFactory sf = configs.buildSessionFactory();
                             Session sess = sf.openSession();
                             sess.beginTransaction();
-                            Query q1 = sess.createQuery("from FishImport f,ImportStock i where i.Im_ID = f.Im_Id ");
+                            Query q1 = sess.createQuery("from FishImport f,ImportStock i where i.Im_ID = f.Im_Id and UserID ="+session.getAttribute("logname"));
                             List<Object[]> l = q1.list();
                             
                             for (Object[] row : l) {
@@ -80,7 +80,7 @@
                         <%
                             }
 
-                            q1 = sess.createQuery("select sum(fish_qty),sum(fish_amt),sum(fish_totamt) from FishImport");
+                            q1 = sess.createQuery("select sum(f.fish_qty),sum(f.fish_amt),sum(f.fish_totamt) from FishImport f , ImportStock i where i.Im_ID = f.Im_Id and UserID ="+session.getAttribute("logname"));
                             List<Object[]> l2 = q1.list();
                             for (Object[] row : l2) {
                         %>

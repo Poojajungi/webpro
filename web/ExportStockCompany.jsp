@@ -75,6 +75,7 @@
                     <div class="col-md-6 col-lg-6 col-sm-12 formmain">
                         <input type="number" name="ExportQty" placeholder=" "  id="num1" class="form-control textbox" oninput="calculateTotal()"/>
                         <label  class="form-labeline">Enter Quantity(KG)</label>
+                        <input type="hidden" name="sessHidden" value="<%= session.getAttribute("logname") %>"/>
                     </div>
 
                 </div>
@@ -109,10 +110,11 @@
                 float qty = Float.parseFloat(request.getParameter("ExportQty"));
                 float am = Float.parseFloat(request.getParameter("ExportAmt"));
                 float tam = Float.parseFloat(request.getParameter("ExportTamt"));
+                int uid = Integer.parseInt(request.getParameter("sessHidden"));
 
 //                int f = cr.TotalQuantity(fis, qty);
                 if (cr.TotalQuantity(fis) > 0.0) {
-                    if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam) > 0) {
+                    if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam,uid) > 0) {
                         if (cr.ExportMinus(fis, qty) > 0) {
                             message = "Export Successfully done.";
                             alertType = "success";
