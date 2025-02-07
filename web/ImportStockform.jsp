@@ -124,7 +124,7 @@ window.addEventListener("load", function () {
     %>
     <body class="backdesign vh-200 ">
         <div>
-            <%@include file="homeNav.jsp" %>
+            <%@include file="homeLog.jsp" %>
         </div>
         <div class="container border border-light shadow pb-4 " style="width: 70%;border-radius: 15px;margin-top: 150px;margin-bottom: 190px;">
             <form method="post" id="formId">
@@ -141,7 +141,7 @@ window.addEventListener("load", function () {
 
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <input type="date" name="ImportDate"  class="form-control" value="<%= d != null ? d : ""%>" />
+                        <input type="date" name="ImportDate"  class="form-control" value="<%= d != null ? d : ""%>" required/>
                     </div>
                 </div>
 
@@ -216,7 +216,7 @@ window.addEventListener("load", function () {
         </div>
 
         <%
-
+            try{
             if (request.getParameter("ImportBtn") != null) {
                 int id = Integer.parseInt(request.getParameter("idd"));
                 String boat = request.getParameter("boat/owner");
@@ -235,10 +235,19 @@ window.addEventListener("load", function () {
                 tamt.clear();
                 request.setAttribute("ImportDate", null);
             } else if (request.getParameter("Addbtn") != null) {
+                if (request.getParameter("fish")==null || request.getParameter("ImportQty")==null || request.getParameter("ImportAmt")==null || request.getParameter("ImportTAmt")==null) {
+                        message = "Please Fill Out the Empty Field.";
+                        alertType = "danger";
+                    }
+                else{
                 fish.add(request.getParameter("fish"));
                 qty.add(Float.parseFloat(request.getParameter("ImportQty")));
                 amt.add(Float.parseFloat(request.getParameter("ImportAmt")));
                 tamt.add(Float.parseFloat(request.getParameter("ImportTAmt")));
+                }
+            }
+            }catch(Exception e){
+                response.sendRedirect("error.jsp");
             }
         %>
         <!-- Bootstrap Modal -->
@@ -281,16 +290,16 @@ window.addEventListener("load", function () {
 
         <% if (message != null) { %>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Show modal only if not previously shown
-            if (!sessionStorage.getItem("modalShown")) {
+        
+        document.addEventListener("DOMContentLoaded", function () 
+        {
                 const alertModalElement = document.getElementById("alertModal");
-                if (alertModalElement) {
+//                if (alertModalElement) {
                     const alertModal = new bootstrap.Modal(alertModalElement);
                     alertModal.show();
-                    sessionStorage.setItem("modalShown", "true");
-                }
-            }
+//                    sessionStorage.setItem("modalShown", "true");
+//                }
+//            }
 
             // Attach click event only if the button is present
             const okButton = document.getElementById("okButton");
@@ -302,6 +311,8 @@ window.addEventListener("load", function () {
                     if (btn2) {
                         btn2.disabled = true;
                     }
+                    <% message=null; %>
+                            
                 });
             }
         });

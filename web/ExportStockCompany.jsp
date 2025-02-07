@@ -31,7 +31,7 @@
     </head>
     <body class="backdesign vh-200 ">
         <div>
-            <%@include file="homeNav.jsp" %>
+            <%@include file="homeLog.jsp" %>
         </div>
         <div class="container border border-light shadow pb-4" style="width: 70%;border-radius: 15px;margin-top: 150px;margin-bottom: 190px;">
             <form method="post">

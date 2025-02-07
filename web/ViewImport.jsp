@@ -30,7 +30,7 @@
     </head>
     <body class="backdesign  vh-100">
         <div>
-            <%@include file="homeNav.jsp" %>
+            <%@include file="homeLog.jsp" %>
         </div>
         <div class="container-fluid " >
             <form>
@@ -86,6 +86,7 @@
                         %>
                         <tr class="fw-bold">
                             <td colspan="2" align="right" class="text-primary">Total</td>
+                            
                             <td class="text-center"><%= row[0]%></td>
                             <td class="text-center"><%= row[1]%></td>
                             <td class="text-center"><%= row[2]%></td>

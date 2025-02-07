@@ -19,7 +19,7 @@
     </head>
     <body class="backdesign vh-100 ">
         <div>
-            <%@include file="homeNav.jsp" %>
+            <%@include file="homeLog.jsp" %>
         </div>
         <div class="container-fluid mb-3" >
             <form>

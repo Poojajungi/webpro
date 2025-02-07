@@ -4,6 +4,7 @@
         <servlet-name>TotalQuan</servlet-name>
         <servlet-class>model.TotalQuan</servlet-class>
     </servlet>
+  
     <servlet-mapping>
         <servlet-name>TotalQuan</servlet-name>
         <url-pattern>/getTotalQuantity</url-pattern>

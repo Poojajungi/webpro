@@ -44,7 +44,7 @@
     <body class="vh-100">
         <!--<div id="myid">Choose Language</div>-->
         <div class="mainImg">
-            <%@include file="homeNav.jsp" %>
+            <%@include file="homeLog.jsp" %>
 
 <!--              <script>
                 // JavaScript to show and hide the submenu on hover
@@ -64,9 +64,9 @@
 
 
             <div class="vh-100">
-                <section class=" d-flex flex-column align-items-center">
+<!--                <section class=" d-flex flex-column align-items-center">
                     <h1 class="textdesign slide-up" data-text="Fish Transportation...">Fish Transportation...</h1>
-                </section>
+                </section>-->
             </div>
         </div>
 

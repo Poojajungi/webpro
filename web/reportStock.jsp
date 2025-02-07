@@ -23,7 +23,7 @@
     </head>
     <body>
         <div>
-            <%@include file="homeNav.jsp" %>
+            <%@include file="homeLog.jsp" %>
         </div>
 
         <div id="container" class="container border border-dark shadow mt-3 mb-3" style="width: 60%;">
