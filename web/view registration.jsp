@@ -144,7 +144,7 @@
                     <td><%=mno%></td>
                     <td class="notranslate"><%=em%></td>
                     <td class="notranslate"><%=pw%></td>
-                    <td><a href="Loginform.jsp?users=<%= unm %>&passw=<%= pw %>">View as User</a></td>
+                    <td><a href="Loginform.jsp?users=<%= unm %>">View as User</a></td>
                 </tr>
                 <%}%>
             </table>

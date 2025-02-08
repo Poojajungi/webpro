@@ -30,6 +30,11 @@
         </script>
     </head>
     <body class="backdesign vh-200">
+         <%
+            if (session.getAttribute("logname")==null) {
+                    response.sendRedirect("Loginform.jsp");
+                }
+        %>
         <div>
             <%@include file="homeLog.jsp" %>
         </div>
@@ -48,14 +53,15 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
-                        <select class="form-control" name="ExportpFish" id="fishss" onchange="fishChange()">
+                        <select class="form-control" name="ExportpFish" id="dropdown">
                             <option value="one">--Select Fish Type--</option>
                             <%
-                                Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class);
+                                Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(ImportStock.class);
                                 SessionFactory sf = con.buildSessionFactory();
                                 Session sess = sf.openSession();
                                 sess.beginTransaction();
-                                Query q1 = sess.createQuery("select distinct fish_name from FishImport");
+                                int ses = Integer.parseInt(session.getAttribute("logname").toString());
+                                Query q1 = sess.createQuery("select distinct f.fish_name from FishImport f,ImportStock i where f.Im_Id=i.Im_ID and  i.UserID="+ses);
                                 List<String> l1 = q1.list();
                                 for (String f : l1) {
                                     System.out.print(f);
@@ -112,7 +118,7 @@
                 crud cr = new crud();
                 if (cr.TotalQuantity(fis) > 0.0) {
                     if (cr.ExportAgencyAdd(com, dat, fis, qty, am, tam,uid) > 0) {
-                        if (cr.ExportMinus(fis, qty) > 0) {
+                        if (cr.ExportMinus(fis, qty,uid) > 0) {
                             message = "Export Successfully done.";
                             alertType = "success";
                         }
@@ -265,7 +271,7 @@
             // Remove query parameters from the URL
             const baseUrl = window.location.origin + window.location.pathname;
 //            window.location.replace(baseUrl); // Replaces current URL and refreshes
-            request.setAttribute("message", null);
+            <% message=null; %>
             });
             <% }%>
         </script>

@@ -70,7 +70,8 @@
             }
         </script>
     </head>
-    <body  onload="loadValue()">
+    <!--<body   onload="loadValue()">-->
+        <body onload="loadValue()" style="background: linear-gradient(160deg,#89D8E3,white,white,whitesmoke,white,#101E42);background-repeat: no-repeat;" class="vh-100 overflow-hidden"> 
 
         <div class="card bg-transparent border-light"
              style=" background: linear-gradient(160deg,#89D8E3,#CD899E,#F9D3C0,#CFE0F8,#CD899E,#9B70A0,#101E42); height: auto; width: 390px; margin: 60px auto;">

@@ -30,6 +30,11 @@
         </script>
     </head>
     <body class="backdesign vh-200 ">
+         <%
+            if (session.getAttribute("logname")==null) {
+                    response.sendRedirect("Loginform.jsp");
+                }
+        %>
         <div>
             <%@include file="homeLog.jsp" %>
         </div>
@@ -39,10 +44,23 @@
                 <div class="row mt-4 mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <select class="form-control" name="Exportcompany">
-                            <option value="one" disabled selected>--Select Company Name--</option>
-                            <option value="one">One</option>
-                            <option value="one">Two</option>
-                            <option value="one">Three</option>
+                            <option value="" disabled selected>--Select Company Name--</option>
+                            <%
+                                Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(companyData.class).addAnnotatedClass(ImportStock.class);
+                                SessionFactory sf = con.buildSessionFactory();
+                                Session sess = sf.openSession();
+                                sess.beginTransaction();
+                                int ses = Integer.parseInt(session.getAttribute("logname").toString());
+                                Query q1 = sess.createQuery("select distinct cname from companyData where Userid="+ses);
+                                List<String> l11 = q1.list();
+                                for (String f : l11) {
+                            %>
+                            <option value=<%=f%>><%= f%></option>
+                            <%
+                                }
+                                sess.getTransaction().commit();
+                                sess.close();
+                            %>
                         </select>
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-12">
@@ -53,13 +71,14 @@
                 <div class="row mb-3">
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <select class="form-control" name="Exportfish" id="dropdown">
-                            <option value="one" disabled selected>--Select Fish Type--</option>
+                            <option value="" disabled selected>--Select Fish Type--</option>
                             <%
-                                Configuration con = new Configuration().configure().addAnnotatedClass(FishImport.class);
-                                SessionFactory sf = con.buildSessionFactory();
-                                Session sess = sf.openSession();
+                                 con = new Configuration().configure().addAnnotatedClass(FishImport.class);
+//                                SessionFactory sf = con.buildSessionFactory();
+                                 sess = sf.openSession();
                                 sess.beginTransaction();
-                                Query q1 = sess.createQuery("select distinct fish_name from FishImport");
+                                 int sehs = Integer.parseInt(session.getAttribute("logname").toString());
+                                 q1 = sess.createQuery("select distinct f.fish_name from FishImport f,ImportStock i where f.Im_Id=i.Im_ID and  i.UserID="+sehs);
                                 List<String> l1 = q1.list();
                                 for (String f : l1) {
                             %>
@@ -115,7 +134,7 @@
 //                int f = cr.TotalQuantity(fis, qty);
                 if (cr.TotalQuantity(fis) > 0.0) {
                     if (cr.ExportCompanyAdd(com, dat, fis, qty, am, tam,uid) > 0) {
-                        if (cr.ExportMinus(fis, qty) > 0) {
+                        if (cr.ExportMinus(fis, qty,uid) > 0) {
                             message = "Export Successfully done.";
                             alertType = "success";
                         }
@@ -273,7 +292,8 @@
             const baseUrl = window.location.origin + window.location.pathname;
 //                window.location.replace(baseUrl); // Replaces current URL and refreshes
 //                    window.location.replace(" ",baseUrl);
-            request.setAttribute("message", null);
+//            request.setAttribute("message", null);
+                <% message=null; %>
             });
             }
             });

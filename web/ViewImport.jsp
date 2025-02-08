@@ -29,6 +29,11 @@
 
     </head>
     <body class="backdesign  vh-100">
+        <%
+            if (session.getAttribute("logname")==null) {
+                    response.sendRedirect("Loginform.jsp");
+                }
+        %>
         <div>
             <%@include file="homeLog.jsp" %>
         </div>
@@ -87,9 +92,9 @@
                         <tr class="fw-bold">
                             <td colspan="2" align="right" class="text-primary">Total</td>
                             
-                            <td class="text-center"><%= row[0]%></td>
-                            <td class="text-center"><%= row[1]%></td>
-                            <td class="text-center"><%= row[2]%></td>
+                            <td class="text-center"><%= (row[0]!=null)?row[0]:0%></td>
+                            <td class="text-center"><%= (row[1]!=null)?row[1]:0%></td>
+                            <td class="text-center"><%=(row[2]!=null)?row[2]:0%></td>
                             <td colspan="2"></td>
                         </tr>
                         <%

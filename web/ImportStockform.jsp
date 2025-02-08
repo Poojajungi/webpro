@@ -7,7 +7,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Date"%>
-<%@page import="model.crud"%>
+<%@page import="model.*"%>
 <%@page import="java.time.LocalDate"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%! int i = 0;
@@ -123,6 +123,11 @@ window.addEventListener("load", function () {
         int ids = cr.getIds() + 1;
     %>
     <body class="backdesign vh-200 ">
+         <%
+            if (session.getAttribute("logname")==null) {
+                    response.sendRedirect("Loginform.jsp");
+                }
+        %>
         <div>
             <%@include file="homeLog.jsp" %>
         </div>
@@ -134,9 +139,23 @@ window.addEventListener("load", function () {
 
                         <select class="form-control" name="boat/owner" id="dropdown" required>
                             <option value="" disabled <%= selectedValue == null ? "selected" : ""%>>--Select Boat/Owner--</option>
-                            <option value="one" <%= "one".equals(selectedValue) ? "selected" : ""%>>One</option>
-                            <option value="two" <%= "two".equals(selectedValue) ? "selected" : ""%>>Two</option>
-                            <option value="three" <%= "three".equals(selectedValue) ? "selected" : ""%>>Three</option>
+
+                             <%
+                                Configuration con = new Configuration().configure().addAnnotatedClass(ownerData.class).addAnnotatedClass(fishnames.class);
+                                SessionFactory sf = con.buildSessionFactory();
+                                Session sess = sf.openSession();
+                                int ses = Integer.parseInt(session.getAttribute("logname").toString());
+                                sess.beginTransaction();
+                                Query q1 = sess.createQuery("select distinct oName from ownerData where UserId="+ses);
+                                List<String> l12 = q1.list();
+                                for (String f : l12) {
+                            %>
+                            <option value="<%=f%>" <%= f.equals(selectedValue) ? "selected" : ""%>><%= f%></option>
+                            <%
+                                }
+                                sess.getTransaction().commit();
+                                sess.close();
+                            %>
                         </select>
 
                     </div>
@@ -150,11 +169,11 @@ window.addEventListener("load", function () {
                         <select class="form-control" name="fish" id="fishTypeDropdown" >
                             <option value="" disabled selected>--Select Fish Type--</option>
                             <%
-                                Configuration con = new Configuration().configure().addAnnotatedClass(fishnames.class);
-                                SessionFactory sf = con.buildSessionFactory();
-                                Session sess = sf.openSession();
+                                 con = new Configuration().configure().addAnnotatedClass(fishnames.class);
+//                                SessionFactory sf = con.buildSessionFactory();
+                                 sess = sf.openSession();
                                 sess.beginTransaction();
-                                Query q1 = sess.createQuery("from fishnames");
+                                 q1 = sess.createQuery("from fishnames");
                                 List<fishnames> l1 = q1.list();
                                 for (fishnames obj : l1) {
                             %>

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : Loginform
-    Created on : 19 Dec, 2024, 10:19:01 PM
-    Author     : mahek
---%>
 
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.Query"%>
@@ -49,7 +44,7 @@
                     </div>
                     <!--<input type="hidden" name="cap1"  id="captchavalue" value=""/>-->
                     <div class="formmain mb-3"  style="padding: 0px !important;" >
-                        <input type="password" name="pw" placeholder=" " class="form-control textbox" required value="<%= request.getParameter("passw") != null ? request.getParameter("passw") : ""%>"/>
+                        <input type="password" name="pw" placeholder=" " class="form-control textbox" required />
                         <label  class="form-labeline">Enter Password</label>
                     </div>
 
@@ -163,11 +158,8 @@
         const okButton = document.getElementById("okButton");
         if (okButton) {
             okButton.addEventListener("click", function () {
-                // Remove query parameters from the URL
                 const baseUrl = window.location.origin + window.location.pathname;
                 window.location.replace(baseUrl); // Replaces current URL and refreshes
-//                    window.location.replace(" ",baseUrl);
-//                request.setAttribute("message", null);
     <%message = null;%>
             });
         }

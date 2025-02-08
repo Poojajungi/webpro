@@ -90,8 +90,8 @@
                                 Boat/Owner
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Register</a></li>
-                                <li><a class="dropdown-item" href="#">View</a></li>
+                                <li><a class="dropdown-item" href="owner_management.jsp">Register</a></li>
+                                <li><a class="dropdown-item" href="selectdata.jsp">View</a></li>
                             </ul>
                         </li>
 
@@ -100,8 +100,8 @@
                                 Withdrawal Management
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Add Withdrawal</a></li>
-                                <li><a class="dropdown-item" href="#">View Withdrawal</a></li>
+                                <li><a class="dropdown-item" href="addDrawing.jsp">Add Withdrawal</a></li>
+                                <li><a class="dropdown-item" href="viewDrawings.jsp">View Withdrawal</a></li>
                             </ul>
                         </li>
 
@@ -132,8 +132,8 @@
                                 Company
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Add New Company</a></li>
-                                <li><a class="dropdown-item" href="#">View Company</a></li>
+                                <li><a class="dropdown-item" href="addCompany.jsp">Add New Company</a></li>
+                                <li><a class="dropdown-item" href="viewCompanies.jsp">View Company</a></li>
                             </ul>
                         </li>
 
@@ -150,7 +150,7 @@
 
                     <div class="d-flex align-items-center gap-3">
                         <!--<a href="#login" class="text-black">LogOut</a>-->
-                        <a href="Loginform.jsp" class="text-white text-decoration-none px-3 py-1shadow rounded-4" style="background-color: #f94ca4">LogOut</a>
+                        <a href="Loginform.jsp" class="text-white text-decoration-none px-3 py-1shadow rounded-4" name="cl" style="background-color: #f94ca4">LogOut</a>
                     </div>
                 </div>
             </div>

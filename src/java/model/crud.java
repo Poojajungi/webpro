@@ -22,7 +22,34 @@ public class crud {
         return (Integer) q1.uniqueResult();
     }
 
-    public int ImportAdd(int id, String nm, String date, List fishName, List qty, List amt, List tamt,int Userid) {
+    public int getIdsOwn() {
+        Configuration config = new Configuration().configure().addAnnotatedClass(ownerData.class);
+        SessionFactory sf = config.buildSessionFactory();
+        Session session = sf.openSession();
+        Query q1 = session.createQuery("SELECT e.id FROM ownerData e ORDER BY e.id DESC");
+        q1.setMaxResults(1);
+        return (Integer) q1.uniqueResult();
+    }
+
+    public int getIdsdraw() {
+        Configuration config = new Configuration().configure().addAnnotatedClass(drowingData.class);
+        SessionFactory sf = config.buildSessionFactory();
+        Session session = sf.openSession();
+        Query q1 = session.createQuery("SELECT e.id FROM drowingData e ORDER BY e.id DESC");
+        q1.setMaxResults(1);
+        return (Integer) q1.uniqueResult();
+    }
+
+    public int getIdsComp() {
+        Configuration config = new Configuration().configure().addAnnotatedClass(companyData.class);
+        SessionFactory sf = config.buildSessionFactory();
+        Session session = sf.openSession();
+        Query q1 = session.createQuery("SELECT e.id FROM companyData e ORDER BY e.id DESC");
+        q1.setMaxResults(1);
+        return (Integer) q1.uniqueResult();
+    }
+
+    public int ImportAdd(int id, String nm, String date, List fishName, List qty, List amt, List tamt, int Userid) {
         Configuration config = new Configuration().configure().addAnnotatedClass(ImportStock.class).addAnnotatedClass(FishImport.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
@@ -63,7 +90,7 @@ public class crud {
         }
     }
 
-    public int ExportCompanyAdd(String nm, String date, String fishName, float qty, float amt, float tamt,int userID) {
+    public int ExportCompanyAdd(String nm, String date, String fishName, float qty, float amt, float tamt, int userID) {
         Configuration config = new Configuration().configure().addAnnotatedClass(ExportCompany.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
@@ -90,7 +117,7 @@ public class crud {
         }
     }
 
-    public int ExportAgencyAdd(String nm, String date, String fishName, float qty, float amt, float tamt,int userID) {
+    public int ExportAgencyAdd(String nm, String date, String fishName, float qty, float amt, float tamt, int userID) {
         Configuration config = new Configuration().configure().addAnnotatedClass(ExportAgency.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
@@ -157,8 +184,8 @@ public class crud {
 //                t.setStock_name(nm);
 //                t.setStock_qty(t.getStock_qty() + qty);
 //                t.setStock_totamt(t.getStock_totamt() + amt);
-                int r = session.createQuery("delete from TotalStock").executeUpdate();
-                TotalstocksMethod();
+            int r = session.createQuery("delete from TotalStock").executeUpdate();
+            TotalstocksMethod();
 //                session.update(t);
 //            }
             session.getTransaction().commit();
@@ -172,15 +199,16 @@ public class crud {
         }
     }
 
-    public int ExportMinus(String nm, float qty) {
-        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(TotalStock.class);
+    public int ExportMinus(String nm, float qty, int us) {
+        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(ImportStock.class).addAnnotatedClass(TotalStock.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
         TotalStock totstock = new TotalStock();
 //        System.out.println(qty);
         try {
             session.beginTransaction();
-            Query q1 = session.createQuery("from FishImport where fish_name like '%" + nm + "%'");
+//            Query q1 = session.createQuery("from FishImport f,ImportStock i where fish_name like '%" + nm + "% and f.Im_Id=i.Im_ID' and UserID="+us);
+            Query q1 = session.createQuery("from FishImport f where fish_name like '%" + nm + "%'");
             Query q2 = session.createQuery("from TotalStock where stock_name like '%" + nm + "%'");
             List<FishImport> ft = q1.list();
             List<TotalStock> t = q2.list();
@@ -189,6 +217,7 @@ public class crud {
                 if (ft.get(i).getFish_qty() != 0) {
                     if (qty > ft.get(i).getFish_qty()) {
                         float n = qty - ft.get(i).getFish_qty();
+                        System.out.println(n);
                         fish.setFish_qty(0);
                         qty = n;
                     }
@@ -196,18 +225,46 @@ public class crud {
                     session.update(fish);
                     fish.setFish_totamt(ft.get(i).getFish_qty() * ft.get(i).getFish_amt());
                     System.out.println("done");
-                    String hql = "UPDATE TotalStock  SET stock_qty = "
-                            + "(SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name like '%" + nm + "%'),"
-                            + "stock_totamt = (SELECT SUM(fish_totamt) FROM FishImport  WHERE fish_name like '%" + nm + "%')"
-                            + "WHERE stock_name = :fishName";
 
-//                    System.out.println(hql);
-//                    System.out.println(qty + nm);
-                    Query query = session.createQuery(hql);
-                    query.setParameter("fishName", nm);
-//                    System.out.println(hql);
-                    int updatedRows = query.executeUpdate();
-//                    System.out.println(updatedRows);
+//                    String hql = "UPDATE TotalStock "
+//                            + "SET stock_qty = (SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name LIKE :fishName), "
+//                            + "stock_totamt = (SELECT SUM(fish_totamt) FROM FishImport  WHERE fish_name LIKE :fishName) "
+//                            + "UserID = :usidd "
+//                            + "WHERE stock_name = :fishName";
+//
+//                    Query query = session.createQuery(hql);
+//                    query.setParameter("fishName", "%" + nm + "%");
+//                    query.setParameter("usidd", us);
+////                    System.out.println(hql);
+//                    int updatedRows = query.executeUpdate();
+////                    System.out.println(updatedRows);
+// Step 1: Select aggregate values from FishImport
+                    String selectHql = "SELECT COALESCE(SUM(f.fish_qty), 0), COALESCE(SUM(f.fish_totamt), 0) "
+                            + "FROM FishImport f WHERE f.fish_name LIKE :fishName";
+
+                    Query selectQuery = session.createQuery(selectHql);
+                    selectQuery.setParameter("fishName", "%" + nm + "%");
+                    Object[] result = (Object[]) selectQuery.uniqueResult();
+
+                    Double stockQty = (Double) result[0];
+                    Double stockTotAmt = (Double) result[1];
+
+// Step 2: Perform the update without subqueries
+                    String updateHql = "UPDATE TotalStock "
+                            + "SET stock_qty = :stockQty, "
+                            + "stock_totamt = :stockTotAmt, "
+                            + "UserID = :usidd "
+                            + "WHERE stock_name LIKE :fishName";
+
+                    Query updateQuery = session.createQuery(updateHql);
+                    updateQuery.setParameter("stockQty", stockQty);
+                    updateQuery.setParameter("stockTotAmt", stockTotAmt);
+                    updateQuery.setParameter("usidd", us);
+                    updateQuery.setParameter("fishName", "%" + nm + "%");
+
+                    int updatedRows = updateQuery.executeUpdate();
+                    System.out.println("Updated Rows: " + updatedRows);
+
                     break;
                 } else {
                     session.delete(fish);
@@ -239,9 +296,9 @@ public class crud {
 //            float p = (float) session.get(FishImport.class,l1.get(0).getFish_qty());
             Object result = q3.uniqueResult();
 
-        if (result != null) {
-            p = ((Number) result).floatValue(); // Convert result to float
-        }
+            if (result != null) {
+                p = ((Number) result).floatValue(); // Convert result to float
+            }
             session.getTransaction().commit();
             return p;
         } catch (Exception e) {
