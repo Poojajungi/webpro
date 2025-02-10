@@ -9,64 +9,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
-<!--        <style>
-            /* Ensure the nested dropdowns align correctly */
-            .dropdown-menu .dropdown-menu {
-                /* margin-left: 100%; */
-                top: 0;
-                left: 100%;
-                margin-top: -5px;
-            }
-
-            /* Hide submenu by default */
-            .submenu .dropdown-menu {
-                display: none;
-            }
-
-            /* Optional: Add transition for smooth effect */
-            .submenu .dropdown-menu {
-                transition: opacity 0.2s;
-            }
-        </style>
-        <script>
-
-            function loadGoogleTranslate()
-
-            {
-
-                new google.translate.TranslateElement("myid")
-
-            }
-        </script>-->
-
         <title>Home Page</title>
     </head>
     <body class="vh-100">
         <!--<div id="myid">Choose Language</div>-->
         <div class="mainImg">
             <%@include file="homeLog.jsp" %>
+             <div class="vh-100">
 
-<!--              <script>
-                // JavaScript to show and hide the submenu on hover
-                const submenu = document.getElementById('submenu');
-                const submenuDropdown = submenu.querySelector('.dropdown-menu');
-                
-                // Show submenu on mouse enter
-                submenu.addEventListener('mouseenter', () => {
-                  submenuDropdown.style.display = 'block';
-                });
-                
-                // Hide submenu on mouse leave
-                submenu.addEventListener('mouseleave', () => {
-                  submenuDropdown.style.display = 'none';
-                });
-              </script>-->
-
-
-            <div class="vh-100">
-<!--                <section class=" d-flex flex-column align-items-center">
-                    <h1 class="textdesign slide-up" data-text="Fish Transportation...">Fish Transportation...</h1>
-                </section>-->
             </div>
         </div>
 
@@ -114,10 +64,7 @@
                 </p>
             </div>
         </div>
-
-  
-           
+       
 <%@include file="homeFooter.jsp" %>
     </body>
 </html>
-<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />-->

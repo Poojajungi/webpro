@@ -1,9 +1,3 @@
-<%-- 
-    Document   : addCompany
-    Created on : Jan 16, 2025, 5:29:39 PM
-    Author     : dkvag
---%>
-
 <%@page import="model.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
@@ -126,12 +120,12 @@
                         <%
                             if (alertType == "danger") {
                         %>
-                        <!--<img  src="CSS/Images/tryag.png" height="70px" width="70px"/>-->
+                        <img  src="CSS/Images/tryag.png" height="70px" width="70px"/>
 
                         <%
                         } else {
                         %>
-                        <!--<img  src="CSS/Images/succes.png" height="70px" width="70px"/>-->
+                        <img  src="CSS/Images/succes.png" height="70px" width="70px"/>
                         <%
                             }
                         %>

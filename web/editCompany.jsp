@@ -113,7 +113,7 @@
 
             CompanyDAO dao = new CompanyDAO();
             dao.update(cd);
-            response.sendRedirect("addCompany.jsp");
+            response.sendRedirect("viewCompanies.jsp");
         }
     } catch (Exception e) {
         e.printStackTrace();

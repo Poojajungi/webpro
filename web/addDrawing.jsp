@@ -1,6 +1,5 @@
 
 <%@page import="model.*"%>
-<%--<%@page import="mydata.drowingData"%>--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%!
     String message = null;
@@ -111,7 +110,7 @@
 
                     DrawingDAO dao = new DrawingDAO();
                     dao.create(dd);
-                    message = "Drawing Added Successfully.";
+                    message = "Withdrawal Added Successfully.";
                     alertType = "Success";
                 }
             } catch (Exception e) {

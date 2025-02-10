@@ -149,9 +149,11 @@ public class crud {
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
         try {
+            //SELECT f.fish_name, COALESCE(SUM(f.fish_qty), 0), COALESCE(SUM(f.fish_totamt), 0),i.UserID FROM FishImport f,importstock i WHERE i.Im_ID=f.Im_ID GROUP by f.fish_name,i.UserID;
+            //SELECT DISTINCT f.fish_name,sum(f.fish_qty),SUM(f.fish_totamt),i.UserID FROM FishImport f,ImportStock i where f.Im_Id = i.Im_ID GROUP by fish_name
             session.beginTransaction();
             int r = session.createQuery("insert into TotalStock(stock_name,stock_qty,stock_totamt,UserID)"
-                    + "SELECT DISTINCT f.fish_name,sum(f.fish_qty),SUM(f.fish_totamt),i.UserID FROM FishImport f,ImportStock i where f.Im_Id = i.Im_ID GROUP by fish_name").executeUpdate();
+                    + "SELECT f.fish_name, COALESCE(SUM(f.fish_qty), 0), COALESCE(SUM(f.fish_totamt), 0),i.UserID FROM FishImport f,ImportStock i WHERE i.Im_ID=f.Im_Id GROUP by f.fish_name,i.UserID").executeUpdate();
             session.getTransaction().commit();
             session.close();
             sf.close();
@@ -199,98 +201,186 @@ public class crud {
         }
     }
 
-    public int ExportMinus(String nm, float qty, int us) {
-        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(ImportStock.class).addAnnotatedClass(TotalStock.class);
-        SessionFactory sf = config.buildSessionFactory();
-        Session session = sf.openSession();
-        TotalStock totstock = new TotalStock();
-//        System.out.println(qty);
-        try {
-            session.beginTransaction();
-//            Query q1 = session.createQuery("from FishImport f,ImportStock i where fish_name like '%" + nm + "% and f.Im_Id=i.Im_ID' and UserID="+us);
-            Query q1 = session.createQuery("from FishImport f where fish_name like '%" + nm + "%'");
-            Query q2 = session.createQuery("from TotalStock where stock_name like '%" + nm + "%'");
-            List<FishImport> ft = q1.list();
-            List<TotalStock> t = q2.list();
-            for (int i = 0; i < ft.size(); i++) {
-                FishImport fish = (FishImport) session.get(FishImport.class, ft.get(i).getFish_Id());
-                if (ft.get(i).getFish_qty() != 0) {
-                    if (qty > ft.get(i).getFish_qty()) {
-                        float n = qty - ft.get(i).getFish_qty();
-                        System.out.println(n);
-                        fish.setFish_qty(0);
-                        qty = n;
-                    }
-                    fish.setFish_qty(ft.get(i).getFish_qty() - qty);
-                    session.update(fish);
-                    fish.setFish_totamt(ft.get(i).getFish_qty() * ft.get(i).getFish_amt());
-                    System.out.println("done");
-
-//                    String hql = "UPDATE TotalStock "
-//                            + "SET stock_qty = (SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name LIKE :fishName), "
-//                            + "stock_totamt = (SELECT SUM(fish_totamt) FROM FishImport  WHERE fish_name LIKE :fishName) "
-//                            + "UserID = :usidd "
-//                            + "WHERE stock_name = :fishName";
+//    public int ExportMinus(String nm, float qty, int us) {
+//        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(ImportStock.class).addAnnotatedClass(TotalStock.class);
+//        SessionFactory sf = config.buildSessionFactory();
+//        Session session = sf.openSession();
+//        TotalStock totstock = new TotalStock();
+////        System.out.println(qty);
+//        try {
+//            session.beginTransaction();
+////            Query q1 = session.createQuery("from FishImport f,ImportStock i where fish_name like '%" + nm + "% and f.Im_Id=i.Im_ID' and UserID="+us);
+//            Query q1 = session.createQuery("from FishImport f,ImportStock i where f.fish_name like '%" + nm + "%' and f.Im_Id=i.Im_ID and i.UserID="+us);
+//            Query q2 = session.createQuery("from TotalStock where stock_name like '%" + nm + "%'");
+//            List<FishImport> ft = q1.list();
+//            List<TotalStock> t = q2.list();
+//            for (int i = 0; i < ft.size(); i++) {
+//                FishImport fish = (FishImport) session.get(FishImport.class, ft.get(i).getFish_Id());
+//                if (ft.get(i).getFish_qty() != 0) {
+//                    if (qty > ft.get(i).getFish_qty()) {
+//                        float n = qty - ft.get(i).getFish_qty();
+//                        System.out.println(n);
+//                        fish.setFish_qty(0);
+//                        qty = n;
+//                    }
+//                    fish.setFish_qty(ft.get(i).getFish_qty() - qty);
+//                    session.update(fish);
+//                    fish.setFish_totamt(ft.get(i).getFish_qty() * ft.get(i).getFish_amt());
+//                    System.out.println("done");
 //
-//                    Query query = session.createQuery(hql);
-//                    query.setParameter("fishName", "%" + nm + "%");
-//                    query.setParameter("usidd", us);
-////                    System.out.println(hql);
-//                    int updatedRows = query.executeUpdate();
-////                    System.out.println(updatedRows);
-// Step 1: Select aggregate values from FishImport
-                    String selectHql = "SELECT COALESCE(SUM(f.fish_qty), 0), COALESCE(SUM(f.fish_totamt), 0) "
-                            + "FROM FishImport f WHERE f.fish_name LIKE :fishName";
+////                    String hql = "UPDATE TotalStock "
+////                            + "SET stock_qty = (SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name LIKE :fishName), "
+////                            + "stock_totamt = (SELECT SUM(fish_totamt) FROM FishImport  WHERE fish_name LIKE :fishName) "
+////                            + "UserID = :usidd "
+////                            + "WHERE stock_name = :fishName";
+////
+////                    Query query = session.createQuery(hql);
+////                    query.setParameter("fishName", "%" + nm + "%");
+////                    query.setParameter("usidd", us);
+//////                    System.out.println(hql);
+////                    int updatedRows = query.executeUpdate();
+//////                    System.out.println(updatedRows);
+//// Step 1: Select aggregate values from FishImport
+//                    String selectHql = "SELECT COALESCE(SUM(f.fish_qty), 0), COALESCE(SUM(f.fish_totamt), 0) "
+//                            + "FROM FishImport f WHERE f.fish_name LIKE :fishName";
+//
+//                    Query selectQuery = session.createQuery(selectHql);
+//                    selectQuery.setParameter("fishName", "%" + nm + "%");
+//                    Object[] result = (Object[]) selectQuery.uniqueResult();
+//
+//                    Double stockQty = (Double) result[0];
+//                    Double stockTotAmt = (Double) result[1];
+//
+//// Step 2: Perform the update without subqueries
+//                    String updateHql = "UPDATE TotalStock "
+//                            + "SET stock_qty = :stockQty, "
+//                            + "stock_totamt = :stockTotAmt, "
+//                            + "UserID = :usidd "
+//                            + "WHERE stock_name LIKE :fishName";
+//
+//                    Query updateQuery = session.createQuery(updateHql);
+//                    updateQuery.setParameter("stockQty", stockQty);
+//                    updateQuery.setParameter("stockTotAmt", stockTotAmt);
+//                    updateQuery.setParameter("usidd", us);
+//                    updateQuery.setParameter("fishName", "%" + nm + "%");
+//
+//                    int updatedRows = updateQuery.executeUpdate();
+//                    System.out.println("Updated Rows: " + updatedRows);
+//
+//                    break;
+//                } else {
+//                    session.delete(fish);
+//                    continue;
+//                }
+//            }
+//            session.getTransaction().commit();
+//            return 1;
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            session.getTransaction().rollback();
+//            return 0;
+//        } finally {
+//            session.close();
+//            sf.close();
+//        }
+//    }
+    
+  public int ExportMinus(String nm, float qty, int us) {
+    Configuration config = new Configuration()
+            .configure()
+            .addAnnotatedClass(FishImport.class)
+            .addAnnotatedClass(ImportStock.class)
+            .addAnnotatedClass(TotalStock.class);
 
-                    Query selectQuery = session.createQuery(selectHql);
-                    selectQuery.setParameter("fishName", "%" + nm + "%");
-                    Object[] result = (Object[]) selectQuery.uniqueResult();
+    SessionFactory sf = config.buildSessionFactory();
+    Session session = sf.openSession();
 
-                    Double stockQty = (Double) result[0];
-                    Double stockTotAmt = (Double) result[1];
+    try {
+        session.beginTransaction();
 
-// Step 2: Perform the update without subqueries
-                    String updateHql = "UPDATE TotalStock "
-                            + "SET stock_qty = :stockQty, "
-                            + "stock_totamt = :stockTotAmt, "
-                            + "UserID = :usidd "
-                            + "WHERE stock_name LIKE :fishName";
+        // HQL without entity relationships (manual joins)
+        String hqlFishImport = "from FishImport f, ImportStock i " +
+                                "where f.Im_Id = i.Im_ID " +
+                                "and f.fish_name like :fishName " +
+                                "and i.UserID = :userId";
+
+        Query q1 = session.createQuery(hqlFishImport);
+        q1.setString("fishName", "%" + nm + "%");
+        q1.setInteger("userId", us);
+
+        String hqlTotalStock = "from TotalStock where stock_name like :fishName";
+        Query q2 = session.createQuery(hqlTotalStock);
+        q2.setString("fishName", "%" + nm + "%");
+
+        List<Object[]> results = q1.list();
+
+        for (Object[] row : results) {
+            FishImport fish = (FishImport) row[0]; // Extract FishImport
+            if (fish.getFish_qty() != 0) {
+                if (qty > fish.getFish_qty()) {
+                    qty -= fish.getFish_qty();
+                    fish.setFish_qty(0);
+                } else {
+                    fish.setFish_qty(fish.getFish_qty() - qty);
+                    qty = 0;
+                }
+                fish.setFish_totamt(fish.getFish_qty() * fish.getFish_amt());
+                session.update(fish);
+
+                String selectHql = "SELECT COALESCE(SUM(f.fish_qty), 0), COALESCE(SUM(f.fish_totamt), 0) " +
+                                   "FROM FishImport f,ImportStock i WHERE f.fish_name LIKE :fishName and f.Im_Id=i.Im_ID and i.UserID="+us;
+                Query selectQuery = session.createQuery(selectHql);
+                selectQuery.setString("fishName", "%" + nm + "%");
+                Object[] result = (Object[]) selectQuery.uniqueResult();
+
+                if (result != null) {
+                    Float stockQty = ((Double) result[0]).floatValue();
+                    Float stockTotAmt = ((Double) result[1]).floatValue();
+
+                    String updateHql = "UPDATE TotalStock " +
+                                       "SET stock_qty = :stockQty, " +
+                                       "stock_totamt = :stockTotAmt, " +
+                                       "UserID = :usidd " +
+                                       "WHERE stock_name LIKE :fishName";
 
                     Query updateQuery = session.createQuery(updateHql);
-                    updateQuery.setParameter("stockQty", stockQty);
-                    updateQuery.setParameter("stockTotAmt", stockTotAmt);
-                    updateQuery.setParameter("usidd", us);
-                    updateQuery.setParameter("fishName", "%" + nm + "%");
+                    updateQuery.setFloat("stockQty", stockQty);
+                    updateQuery.setFloat("stockTotAmt", stockTotAmt);
+                    updateQuery.setInteger("usidd", us);
+                    updateQuery.setString("fishName", "%" + nm + "%");
 
                     int updatedRows = updateQuery.executeUpdate();
                     System.out.println("Updated Rows: " + updatedRows);
-
-                    break;
-                } else {
-                    session.delete(fish);
-                    continue;
                 }
+                break;
+            } else {
+                session.delete(fish);
             }
-            session.getTransaction().commit();
-            return 1;
-        } catch (Exception e) {
-            System.out.println(e);
-            session.getTransaction().rollback();
-            return 0;
-        } finally {
-            session.close();
-            sf.close();
         }
-    }
+        session.getTransaction().commit();
+        return 1;
 
-    public float TotalQuantity(String nm) {
-        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class);
+    } catch (Exception e) {
+        e.printStackTrace();
+        session.getTransaction().rollback();
+        return 0;
+    } finally {
+        session.close();
+        sf.close();
+    }
+}
+
+
+
+
+    public float TotalQuantity(String nm,int uid) {
+        Configuration config = new Configuration().configure().addAnnotatedClass(FishImport.class).addAnnotatedClass(ImportStock.class);
         SessionFactory sf = config.buildSessionFactory();
         Session session = sf.openSession();
         float p = 0;
         try {
             session.beginTransaction();
-            Query q3 = session.createQuery("SELECT SUM(fish_qty) FROM FishImport  WHERE fish_name like '%" + nm + "%'");
+            Query q3 = session.createQuery("SELECT SUM(f.fish_qty) FROM FishImport f,ImportStock i WHERE f.fish_name like '%" + nm + "%' and i.Im_ID=f.Im_Id and i.UserID="+uid);
 ////            Object p = q3.uniqueResult();
 //            List<FishImport> l1 = q3.list();
 //            float p = (float) session.get(FishImport.class,l1.get(0).getFish_qty());

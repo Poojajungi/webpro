@@ -26,7 +26,7 @@
             <%@include file="homeLog.jsp" %>
         </div>
 
-        <div id="container" class="container border border-dark shadow mt-3 mb-3" style="width: 60%;">
+        <div id="container" class=" container border border-dark shadow mt-3 mb-3" style="width: 60%;">
             <div style="background-color: rgb(213,140,177);" class="row text-white">
                 <div class="row" >
                     <div class="col-12 mt-4">
@@ -82,8 +82,8 @@
                     </tr>
                     <tr class="fw-bold fs-5">
                         <td style="color:rgb(209,140,177);">Total Items: <%= n%></td>
-                        <td style="color:rgb(209,140,177);" class="text-center"><%= row[0]%></td>
-                        <td style="color:rgb(209,140,177);" class="text-center"><%= row[1]%></td>
+                        <td style="color:rgb(209,140,177);" class="text-center"><%= (row[0]!=null)?row[0]:0%></td>
+                        <td style="color:rgb(209,140,177);" class="text-center"><%= (row[1]!=null)?row[1]:0%></td>
                     </tr>
                     <%
                             }

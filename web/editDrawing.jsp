@@ -112,7 +112,7 @@
 
             DrawingDAO dao = new DrawingDAO();
             dao.update(dd);
-            response.sendRedirect("addDrawing.jsp");
+            response.sendRedirect("viewDrawings.jsp");
         }
     } catch (Exception e) {
         e.printStackTrace();

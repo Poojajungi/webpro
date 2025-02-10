@@ -116,7 +116,7 @@
                 int uid = Integer.parseInt(request.getParameter("sessHidden"));
 
                 crud cr = new crud();
-                if (cr.TotalQuantity(fis) > 0.0) {
+                if (cr.TotalQuantity(fis,uid) > 0.0) {
                     if (cr.ExportAgencyAdd(com, dat, fis, qty, am, tam,uid) > 0) {
                         if (cr.ExportMinus(fis, qty,uid) > 0) {
                             message = "Export Successfully done.";
@@ -127,7 +127,7 @@
                         alertType = "danger";
                     }
                 } else {
-                    message = "OUT OF STOCK \n Total Stock is : " + cr.TotalQuantity(fis);
+                    message = "OUT OF STOCK \n Total Stock is : " + cr.TotalQuantity(fis,uid);
                     alertType = "danger";
                 }
 

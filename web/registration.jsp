@@ -98,10 +98,37 @@
                     </div>
                     <div class="col-6">
                         <select id="dropdown2" class="form-select" name="dropdown2" >
-                            <option selected>---Choose City---</option>
-                            <option value="Porbandar">Porbandar</option>
-                            <option value="Surat">Surat</option>
+                            <option selected disabled>---Choose City---</option>
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Amreli">Amreli</option>
+                            <option value="Ankleshwar">Ankleshwar</option>
+                            <option value="Bharuch">Bharuch</option>
+                            <option value="Bhavnagar">Bhavnagar</option>
+                            <option value="Botad">Botad</option>
+                            <option value="Dahod">Dahod</option>
+                            <option value="Dholka">Dholka</option>
+                            <option value="Dwarka">Dwarka</option>
+                            <option value="Gandhinagar">Gandhinagar</option>
+                            <option value="Godhra">Godhra</option>
+                            <option value="Himmatnagar">Himmatnagar</option>
+                            <option value="Jamnagar">Jamnagar</option>
+                            <option value="Junagadh">Junagadh</option>
+                            <option value="Khambhat">Khambhat</option>
+                            <option value="Mahuva">Mahuva</option>
+                            <option value="Mehsana">Mehsana</option>
+                            <option value="Modasa">Modasa</option>
+                            <option value="Morbi">Morbi</option>
+                            <option value="Nadiad">Nadiad</option>
                             <option value="Navsari">Navsari</option>
+                            <option value="Palanpur">Palanpur</option>
+                            <option value="Patan">Patan</option>
+                            <option value="Porbandar">Porbandar</option>
+                            <option value="Rajkot">Rajkot</option>
+                            <option value="Surendranagar">Surendranagar</option>
+                            <option value="Surat">Surat</option>
+                            <option value="Vadodara">Vadodara</option>
+                            <option value="Vapi">Vapi</option>
+                            <option value="Veraval">Veraval</option>
                         </select>
                     </div>
                     <div  class=" formmain col-6" >
@@ -128,6 +155,7 @@
                     <div class=" formmain">
                         <input type="text" class="form-control textbox"  id="otpc" name="otp"  placeholder="">
                         <label  class="form-labeline">Verify OTP</label>
+                        <P class="text-white">*Otp sent to Entered Email</P>
                     </div>
 
                     <div class="text-center">
