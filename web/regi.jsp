@@ -84,7 +84,7 @@
                         </select>
                     </div>
                     <div  class=" formmain col-6" >
-                        <input type="number" id="mno" placeholder=""  name="mnum" oninput="saveValue()" min="0" max="12345678911"  class="form-control textbox" required>
+                        <input type="number" id="mno" placeholder=""  name="mnum" oninput="saveValue()" min="0" max="1234567891"  class="form-control textbox" required>
                         <label  class="form-labeline">Enter MobileNo*</label>
                     </div>
                     <div  class=" formmain col-6">

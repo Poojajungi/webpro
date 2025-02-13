@@ -1,9 +1,5 @@
-<%-- 
-    Document   : forgetpw
-    Created on : 27 Jan, 2025, 1:44:16 AM
-    Author     : mahek
---%>
 
+<%@page import="org.hibernate.Transaction"%>
 <%@page import="model.mvcfile"%>
 <%@page import="java.util.List"%>
 <%@page import="org.hibernate.Query"%>
@@ -44,17 +40,17 @@
                     </div>
 
                     <div class="  formmain">
-                        <input type="text" class="form-control textbox"  name="pw"  id="pw" placeholder="">
+                        <input type="text" class="form-control textbox"  name="pw"  id="pw" placeholder="" required>
                         <label  class="form-labeline">New Password</label></div>
                     <div class=" formmain">
-                        <input type="text" class="form-control textbox"  name="cpw" id="cpw" placeholder="">
+                        <input type="text" class="form-control textbox"  name="cpw" id="cpw" placeholder="" required>
                         <label  class="form-labeline">Confirm Password</label></div>
                     <div class="d-flex">
                         <div class="col-md-3 col-lg-3 col-sm-4 fs-4 fw-bold" id="numcaptchvalue">
                             ssss
                         </div>
                         <div class=" formmain col-lg-9">
-                            <input type="text" class="form-control textbox"  name="numcapt" id="numcaptch" placeholder="">
+                            <input type="text" class="form-control textbox"  name="numcapt" id="numcaptch" placeholder="" required>
                             <label  class="form-labeline">Enter Captcha</label></div></div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-info text-center text-white " name="btn"  data-bs-toggle="modal" 
@@ -85,12 +81,16 @@
                 List<registration> l = o.list();
                 for (registration elem : l) {
                     String number = elem.getMobileno();
+                    
+                    System.out.print("done "+number);
                     if (num.equals(number)) {
                         if (pw.equals(cpw)) {
                             mvcfile m = new mvcfile();
                             m.update(pw, num);
+//                         t.commit();
                             message = "Update Successfully";
                             alertType = "success";
+                            response.sendRedirect("Loginform.jsp");
                         }
                     } else {
                         message = "Try Again";
@@ -99,6 +99,7 @@
                 }
 
             } catch (Exception e) {
+                System.out.print(e);
                  message = "Enter Valid Number";
                  alertType = "danger";
             }
@@ -113,12 +114,12 @@
                     <%
                         if (alertType == "danger") {
                     %>
-                    <!--<img  src="CSS/Images/tryag.png" height="70px" width="70px"/>-->
+                    <img  src="CSS/Images/tryag.png" height="70px" width="70px"/>
 
                     <%
                     } else {
                     %>
-                    <!--<img  src="CSS/Images/succes.png" height="70px" width="70px"/>-->
+                    <img  src="CSS/Images/succes.png" height="70px" width="70px"/>
                     <%
                         }
                     %>
@@ -164,6 +165,7 @@
                     //                    window.location.replace(" ",baseUrl);
                     //                request.setAttribute("message", null);
         <%message = null;%>
+                        
                 });
             }
         });

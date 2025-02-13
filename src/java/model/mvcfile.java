@@ -57,8 +57,8 @@ public class mvcfile {
                     .setParameter("number", mobilenumber)
                     .executeUpdate();
             tx.commit();
-            tx.rollback();
-            s.close();
+//            tx.rollback();
+//            s.close();
             System.out.println("successfully update");
 
         } catch (Exception e) {
