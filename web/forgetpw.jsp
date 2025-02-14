@@ -35,15 +35,15 @@
                 <form class="row g-3 " method="post">
 
                     <div  class=" formmain" >
-                        <input type="number" id="mno" placeholder=""name="mno"   class="form-control textbox" required>
+                        <input type="number" id="mno" placeholder=""name="mno"   class="form-control textbox" required readonly>
                         <label  class="form-labeline">Enter MobileNo</label>
                     </div>
 
                     <div class="  formmain">
-                        <input type="text" class="form-control textbox"  name="pw"  id="pw" placeholder="" required>
+                        <input type="password" class="form-control textbox"  name="pw"  id="pw" placeholder="" required>
                         <label  class="form-labeline">New Password</label></div>
                     <div class=" formmain">
-                        <input type="text" class="form-control textbox"  name="cpw" id="cpw" placeholder="" required>
+                        <input type="password" class="form-control textbox"  name="cpw" id="cpw" placeholder="" required>
                         <label  class="form-labeline">Confirm Password</label></div>
                     <div class="d-flex">
                         <div class="col-md-3 col-lg-3 col-sm-4 fs-4 fw-bold" id="numcaptchvalue">
