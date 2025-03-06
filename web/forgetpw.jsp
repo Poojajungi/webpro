@@ -35,7 +35,7 @@
                 <form class="row g-3 " method="post">
 
                     <div  class=" formmain" >
-                        <input type="number" id="mno" placeholder=""name="mno"   class="form-control textbox" required readonly>
+                        <input type="number" id="mno" placeholder=""name="mno"   class="form-control textbox" required >
                         <label  class="form-labeline">Enter MobileNo</label>
                     </div>
 
